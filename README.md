@@ -6,10 +6,16 @@ To install dependencies:
 bun install
 ```
 
-To run:
+To run in development mode:
 
 ```bash
-bun run src/index.ts
+bun run dev
+```
+
+To run in production mode:
+
+```bash
+bun run start
 ```
 
 This project was created using `bun init` in bun v1.1.33. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
