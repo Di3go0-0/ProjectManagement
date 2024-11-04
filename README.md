@@ -1,4 +1,4 @@
-# projectmanager
+# Project Management System
 
 To install dependencies:
 
