@@ -1,14 +1,14 @@
 import { Router } from "express";
 import {
   createTask,
-  getTasks,
-  getTaskById,
-  updateTask,
   deleteTask,
+  getTaskById,
+  getTasks,
   toggleTask,
+  updateTask,
 } from "../controllers";
 import validateSchema from "../middleware/validateSchema";
-import { taskSchema } from "../schemas/task.scheme.ts"; // Asegúrate de que la ruta sea correcta
+import { taskSchema } from "../schemas"; // Asegúrate de que la ruta sea correcta
 
 const router = Router();
 
