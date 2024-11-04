@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { createTask, getTasks } from "../controllers";
+import {
+  createTask,
+  getTasks,
+  getTaskById,
+  updateTask,
+  deleteTask,
+  toggleTask,
+} from "../controllers";
 import validateSchema from "../middleware/validateSchema";
 import { taskSchema } from "../schemas/task.scheme.ts"; // Asegúrate de que la ruta sea correcta
 
@@ -18,7 +25,6 @@ const router = Router();
  *   get:
  *     summary: Get tasks
  *     tags: [Task]
- *     description: Get all tasks
  *     responses:
  *       200:
  *         description: ALl tasks
@@ -29,11 +35,31 @@ router.get("/", getTasks);
 
 /**
  * @swagger
+ * /task/{id}:
+ *   get:
+ *     summary: Get task
+ *     tags: [Task]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: The task id
+ *     responses:
+ *       200:
+ *         description: Task
+ *       404:
+ *         description: Task not Found
+ */
+router.get("/:id", getTaskById);
+
+/**
+ * @swagger
  * /task:
  *   post:
  *     summary: Create a new task
  *     tags: [Task]
- *     description: Adds a new task to the system
  *     requestBody:
  *       required: true
  *       content:
@@ -47,5 +73,74 @@ router.get("/", getTasks);
  *         description: Invalid input
  */
 router.post("/", validateSchema(taskSchema), createTask);
+
+/**
+ * @swagger
+ * /task/{id}:
+ *   put:
+ *     summary: Update task
+ *     tags: [Task]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Task"
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Task id
+ *     responses:
+ *       201:
+ *         description: Task updated successfully
+ *       404:
+ *         description: Task not found
+ */
+router.put("/:id", validateSchema(taskSchema), updateTask);
+
+/**
+ * @swagger
+ * /task/{id}:
+ *   delete:
+ *     summary: Delete task
+ *     tags: [Task]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Task id
+ *     responses:
+ *       201:
+ *         description: Task deleted successfully
+ *       404:
+ *         description: Task not found
+ */
+router.delete("/:id", deleteTask);
+
+/**
+ * @swagger
+ * /task/{id}:
+ *   patch:
+ *     summary: Toggle task
+ *     tags: [Task]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *         description: Task id
+ *     responses:
+ *       201:
+ *         description: Toggle task
+ *       404:
+ *         description: Task not found
+ */
+router.patch("/:id", toggleTask);
 
 export const taskRoutes = (app: any) => app.use("/task", router);
