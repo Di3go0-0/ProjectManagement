@@ -10,11 +10,17 @@ export const generateToken = ({ id, mail }: GenerateTokenProps) => {
   return jwt.sign({ id, mail }, key, { expiresIn: "12h" });
 };
 
-export const verifyToken = (token: string): TokenProps | null => {
+export const verifyToken = (cookie: string): TokenProps | null => {
   try {
-    return jwt.verify(token, key) as TokenProps;
+    return jwt.verify(cookie, key) as TokenProps;
   } catch (error) {
     console.log("Invalid Token", error);
     return null;
   }
+};
+
+export const getUserId = (cookie: string): number => {
+  const tokenUser = verifyToken(cookie) as TokenProps;
+  const userId = tokenUser.id;
+  return userId;
 };

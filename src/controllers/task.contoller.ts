@@ -1,11 +1,17 @@
 import type { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import {
+  createTaskRepo,
+  deleteTaskRepo,
+  getAllTasksRepo,
+  getTaskByIdRepo,
+  toggleTaskRepo,
+  updateTaskRepo,
+} from "../repository";
 
 export const getTasks = async (req: Request, res: Response) => {
+  const cookie = req.cookies.token as string;
   try {
-    const tasks = await prisma.task.findMany();
+    const tasks = await getAllTasksRepo(cookie);
     res.status(200).json(tasks);
   } catch (err) {
     console.log(err);
@@ -15,15 +21,12 @@ export const getTasks = async (req: Request, res: Response) => {
 
 export const getTaskById = async (req: Request, res: Response) => {
   const { id } = req.params;
-
+  const cookie = req.cookies.token as string;
+  const taskId = Number(id);
   try {
-    const task = await prisma.task.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
+    const task = await getTaskByIdRepo({ taskId, cookie });
     if (!task) {
-      res.status(404).json({ message: "Task not found" });
+      return res.status(404).json({ message: "Task not found" });
     }
     res.status(200).json(task);
   } catch (error) {
@@ -33,14 +36,10 @@ export const getTaskById = async (req: Request, res: Response) => {
 
 export const createTask = async (req: Request, res: Response) => {
   const { title, description } = req.body;
+  const cookie = req.cookies.token as string;
   try {
-    const tasks = await prisma.task.create({
-      data: {
-        title,
-        description,
-      },
-    });
-    res.status(201).json({ data: tasks, message: "Task created successfully" });
+    const task = await createTaskRepo({ title, description, cookie });
+    res.status(201).json({ data: task, message: "Task created successfully" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong" });
@@ -50,17 +49,10 @@ export const createTask = async (req: Request, res: Response) => {
 export const updateTask = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description } = req.body;
+  const cookie = req.cookies.token as string;
+  const taskId = Number(id);
   try {
-    const task = await prisma.task.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        title,
-        description,
-      },
-    });
-
+    const task = await updateTaskRepo({ taskId, title, description, cookie });
     if (!task) {
       res.status(404).json({ message: "Task not found" });
     }
@@ -73,12 +65,11 @@ export const updateTask = async (req: Request, res: Response) => {
 
 export const deleteTask = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const cookie = req.cookies.token as string;
+  const taskId = Number(id);
+
   try {
-    const task = await prisma.task.delete({
-      where: {
-        id: Number(id),
-      },
-    });
+    const task = await deleteTaskRepo({ taskId, cookie });
     if (!task) {
       res.status(404).json({ message: "Task not found" });
     }
@@ -91,15 +82,10 @@ export const deleteTask = async (req: Request, res: Response) => {
 
 export const toggleTask = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const cookie = req.cookies.token as string;
+  const taskId = Number(id);
   try {
-    const task = await prisma.task.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        done: true,
-      },
-    });
+    const task = await toggleTaskRepo({ taskId, cookie });
     if (!task) {
       res.status(404).json({ message: "Task not found" });
     }
