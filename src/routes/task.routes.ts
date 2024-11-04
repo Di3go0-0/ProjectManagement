@@ -7,7 +7,7 @@ import {
   toggleTask,
   updateTask,
 } from "../controllers";
-import { validateSchema } from "../middleware";
+import { userToken, validateSchema } from "../middleware";
 import { taskSchema } from "../schemas"; // Asegúrate de que la ruta sea correcta
 
 const router = Router();
@@ -31,7 +31,7 @@ const router = Router();
  *       400:
  *         description: Error getting tasks
  */
-router.get("/", getTasks);
+router.get("/", userToken, getTasks);
 
 /**
  * @swagger
@@ -52,7 +52,7 @@ router.get("/", getTasks);
  *       404:
  *         description: Task not Found
  */
-router.get("/:id", getTaskById);
+router.get("/:id", userToken, getTaskById);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.get("/:id", getTaskById);
  *       400:
  *         description: Invalid input
  */
-router.post("/", validateSchema(taskSchema), createTask);
+router.post("/", userToken, validateSchema(taskSchema), createTask);
 
 /**
  * @swagger
@@ -99,7 +99,7 @@ router.post("/", validateSchema(taskSchema), createTask);
  *       404:
  *         description: Task not found
  */
-router.put("/:id", validateSchema(taskSchema), updateTask);
+router.put("/:id", userToken, validateSchema(taskSchema), updateTask);
 
 /**
  * @swagger
@@ -120,7 +120,7 @@ router.put("/:id", validateSchema(taskSchema), updateTask);
  *       404:
  *         description: Task not found
  */
-router.delete("/:id", deleteTask);
+router.delete("/:id", userToken, deleteTask);
 
 /**
  * @swagger
@@ -141,6 +141,6 @@ router.delete("/:id", deleteTask);
  *       404:
  *         description: Task not found
  */
-router.patch("/:id", toggleTask);
+router.patch("/:id", userToken, toggleTask);
 
 export const taskRoutes = (app: any) => app.use("/task", router);
