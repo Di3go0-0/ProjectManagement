@@ -8,7 +8,12 @@ const validateSchema = (schema: ZodSchema<any>) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        res.status(400).json({ error: error.errors });
+        res.status(400).json({
+          error: error.errors.map((error) => ({
+            path: error.path[0],
+            message: error.message,
+          })),
+        });
       } else {
         res.status(500).json({ error: "Internal Server Error" });
       }
