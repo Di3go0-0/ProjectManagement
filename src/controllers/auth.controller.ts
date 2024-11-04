@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { generateToken } from "../helpers";
+import { generateToken, verifyToken } from "../helpers";
 
 const prisma = new PrismaClient();
 
@@ -63,4 +63,37 @@ export const logout = async (req: Request, res: Response) => {
   }
   res.clearCookie("token");
   res.status(200).json({ message: "Logout successful" });
+};
+
+interface tokenProps {
+  id: number;
+  mail: string;
+}
+
+export const validateUser = async (req: Request, res: Response) => {
+  const cookie = req.cookies.token;
+  if (!cookie) {
+    res.status(400).json({ message: "No token found" });
+    return;
+  }
+  const token = verifyToken(cookie) as tokenProps;
+  console.log(token);
+  if (token === null) {
+    res.status(400).json({ message: "Invalid token" });
+    return;
+  }
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: token.id,
+      },
+    });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+    res.status(200).json({ message: "Validation successful", data: user.mail });
+  } catch (error) {
+    res.status(500).json({ message: "Error validating user" });
+  }
 };
