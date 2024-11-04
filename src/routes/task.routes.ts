@@ -7,7 +7,7 @@ import {
   toggleTask,
   updateTask,
 } from "../controllers";
-import validateSchema from "../middleware/validateSchema";
+import { validateSchema } from "../middleware";
 import { taskSchema } from "../schemas"; // Asegúrate de que la ruta sea correcta
 
 const router = Router();

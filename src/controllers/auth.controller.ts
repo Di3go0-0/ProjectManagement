@@ -65,18 +65,13 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
-interface tokenProps {
-  id: number;
-  mail: string;
-}
-
 export const validateUser = async (req: Request, res: Response) => {
-  const cookie = req.cookies.token;
+  const cookie = req.cookies.token as string;
   if (!cookie) {
     res.status(400).json({ message: "No token found" });
     return;
   }
-  const token = verifyToken(cookie) as tokenProps;
+  const token = verifyToken(cookie);
   console.log(token);
   if (token === null) {
     res.status(400).json({ message: "Invalid token" });

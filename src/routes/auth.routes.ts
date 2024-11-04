@@ -1,5 +1,5 @@
 import { Router } from "express";
-import validateSchema from "../middleware/validateSchema";
+import { userToken as userToken, validateSchema } from "../middleware";
 import { login, logout, register, validateUser } from "../controllers";
 import { registerSchema, loginSchema } from "../schemas";
 
@@ -72,7 +72,7 @@ router.post("/login", validateSchema(loginSchema), login);
  *       500:
  *         description: Error logging out
  */
-router.post("/logout", logout);
+router.post("/logout", userToken, logout);
 
 /**
  * @swagger
@@ -85,14 +85,14 @@ router.post("/logout", logout);
  *         description: Validation successful
  *       400:
  *         description: No token found
- *       400:
- *       description: Invalid token
+ *       401:
+ *         description: Invalid token
  *       404:
- *       description: User not found
+ *         description: User not found
  *       500:
  *         description: Error validating user
  */
-router.post("/validate", validateUser);
+router.post("/validate", userToken, validateUser);
 
 export const AuthRoutes = (app: any) => {
   app.use("/", router);
