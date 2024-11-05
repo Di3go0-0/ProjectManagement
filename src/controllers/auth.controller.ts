@@ -1,21 +1,18 @@
 import type { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 import { generateToken, verifyToken } from "../helpers";
+import { obtainUserRepo, registerRepo } from "../repository";
+import { verifyPassword } from "../services";
 
 const prisma = new PrismaClient();
 
 export const register = async (req: Request, res: Response) => {
   const { mail, name, password } = req.body;
   try {
-    const passwordHash = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        mail,
-        name,
-        password: passwordHash,
-      },
-    });
+    const user = await registerRepo({ mail, name, password });
+    if (!user) {
+      return res.status(400).json({ message: "Error creating user" });
+    }
     res.status(201).json({ data: user, message: "User created syccessfully" });
   } catch (error) {
     res.status(500).json({ message: "Error creating user" });
@@ -25,19 +22,17 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { mail, password } = req.body;
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        mail,
-      },
-    });
+    const user = await obtainUserRepo(mail);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const userPassword = user.password as string;
+
+    const passwordMatch = await verifyPassword({ password, userPassword });
+
     if (!passwordMatch) {
-      res.status(400).json({ message: "Invalid credentials" });
-      return;
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken({ id: user.id, mail: user.mail });
@@ -71,21 +66,17 @@ export const validateUser = async (req: Request, res: Response) => {
     res.status(400).json({ message: "No token found" });
     return;
   }
+
   const token = verifyToken(cookie);
-  console.log(token);
   if (token === null) {
     res.status(400).json({ message: "Invalid token" });
     return;
   }
+
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: token.id,
-      },
-    });
+    const user = await obtainUserRepo(token.mail);
     if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
+      return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ message: "Validation successful", data: user.mail });
   } catch (error) {
