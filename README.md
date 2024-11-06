@@ -18,4 +18,9 @@ To run in production mode:
 bun run start
 ```
 
+## Swagger
+
+This project uses Swagger to document the API. The Swagger UI is available at `/swagger`.
+`URL/swagger` will redirect to the Swagger UI.
+
 This project was created using `bun init` in bun v1.1.33. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
