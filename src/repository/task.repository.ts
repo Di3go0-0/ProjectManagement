@@ -13,6 +13,7 @@ interface createProps {
   title: string;
   description: string;
   cookie: string;
+  projectId: number;
 }
 
 interface updateProps {
@@ -27,9 +28,13 @@ interface deleteProps {
   cookie: string;
 }
 
-export const getAllTasksRepo = async (
-  cookie: string,
-): Promise<ITask[] | null> => {
+interface allTaskProps {
+  cookie: string;
+}
+
+export const getAllTasksRepo = async ({
+  cookie,
+}: allTaskProps): Promise<ITask[] | null> => {
   const userId = getUserId(cookie);
   try {
     const tasks = await prisma.task.findMany({
@@ -66,6 +71,7 @@ export const createTaskRepo = async ({
   title,
   description,
   cookie,
+  projectId,
 }: createProps): Promise<ITask | null> => {
   const userId = getUserId(cookie);
   try {
@@ -74,6 +80,7 @@ export const createTaskRepo = async ({
         title,
         description,
         userId,
+        projectId: projectId,
       },
     });
     return task;

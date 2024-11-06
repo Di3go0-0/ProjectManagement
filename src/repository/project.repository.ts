@@ -126,3 +126,13 @@ export const deleteProjectRepo = async ({
     return null;
   }
 };
+
+export const projectExists = async (projectId: number): Promise<boolean> => {
+  const project = await prisma.project.findUnique({
+    where: {
+      id: projectId,
+    },
+  });
+  if (!project) return false;
+  return true;
+};

@@ -4,6 +4,7 @@ import {
   deleteTaskRepo,
   getAllTasksRepo,
   getTaskByIdRepo,
+  projectExists,
   toggleTaskRepo,
   updateTaskRepo,
 } from "../repository";
@@ -35,10 +36,20 @@ export const getTaskById = async (req: Request, res: Response) => {
 };
 
 export const createTask = async (req: Request, res: Response) => {
-  const { title, description } = req.body;
+  const { title, description, projectId } = req.body;
   const cookie = req.cookies.token as string;
+  const ProjectId = Number(projectId);
   try {
-    const task = await createTaskRepo({ title, description, cookie });
+    const projectExist = await projectExists(ProjectId);
+    if (!projectExist) {
+      res.status(404).json({ message: "Project not found" });
+    }
+    const task = await createTaskRepo({
+      title,
+      description,
+      cookie,
+      projectId,
+    });
     if (!task) res.status(500).json({ message: "Error creating Task" });
     res.status(201).json({ data: task, message: "Task created successfully" });
   } catch (err) {
