@@ -12,7 +12,7 @@ import {
 export const getTasks = async (req: Request, res: Response) => {
   const cookie = req.cookies.token as string;
   try {
-    const tasks = await getAllTasksRepo(cookie);
+    const tasks = await getAllTasksRepo({ cookie });
     res.status(200).json(tasks);
   } catch (err) {
     console.log(err);
