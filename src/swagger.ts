@@ -2,13 +2,14 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import type { Express } from "express";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { taskSchema } from "./schemas"; // Asegúrate de que la ruta sea correcta
+import { projectSchema, taskSchema } from "./schemas"; // Asegúrate de que la ruta sea correcta
 import { registerSchema, loginSchema } from "./schemas";
 // Convierte el esquema Zod a un esquema JSON
 
 const taskjsonSchema = zodToJsonSchema(taskSchema);
 const registerjsonSchema = zodToJsonSchema(registerSchema);
 const loginjsonSchema = zodToJsonSchema(loginSchema);
+const projectjsonSchema = zodToJsonSchema(projectSchema);
 
 console.log(JSON.stringify(taskjsonSchema, null, 2));
 
@@ -27,6 +28,7 @@ const options = {
     // ],
     components: {
       schemas: {
+        Project: projectjsonSchema, // Asegúrate de que esté definido como "Project"
         Task: taskjsonSchema, // Asegúrate de que esté definido como "Task"
         Register: registerjsonSchema,
         Login: loginjsonSchema,

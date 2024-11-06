@@ -1,8 +1,6 @@
-export interface ITask {
+export interface IProject {
   id: number;
   title: string;
   description: string;
-  done: boolean;
-  projectId: number;
   userId: number;
 }

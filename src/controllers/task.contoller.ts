@@ -26,7 +26,7 @@ export const getTaskById = async (req: Request, res: Response) => {
   try {
     const task = await getTaskByIdRepo({ taskId, cookie });
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      res.status(404).json({ message: "Task not found" });
     }
     res.status(200).json(task);
   } catch (error) {
@@ -39,6 +39,7 @@ export const createTask = async (req: Request, res: Response) => {
   const cookie = req.cookies.token as string;
   try {
     const task = await createTaskRepo({ title, description, cookie });
+    if (!task) res.status(500).json({ message: "Error creating Task" });
     res.status(201).json({ data: task, message: "Task created successfully" });
   } catch (err) {
     console.log(err);
