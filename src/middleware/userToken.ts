@@ -1,7 +1,6 @@
 import type { NextFunction, Response, Request } from "express";
 import { verifyToken } from "../helpers";
 import { PrismaClient } from "@prisma/client";
-import type { TokenProps } from "../interfaces";
 
 const prisma = new PrismaClient();
 
@@ -16,7 +15,7 @@ export const userToken = async (
     return;
   }
 
-  const token = verifyToken(cookie) as TokenProps;
+  const token = await verifyToken(cookie);
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
     return;
