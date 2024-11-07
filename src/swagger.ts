@@ -4,6 +4,11 @@ import type { Express } from "express";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { projectSchema, taskSchema } from "./schemas"; // Asegúrate de que la ruta sea correcta
 import { registerSchema, loginSchema } from "./schemas";
+import {
+  authswaggerDocs,
+  projectSwaggerDocs,
+  taskSwaggerDocs,
+} from "./swaggerDots";
 // Convierte el esquema Zod a un esquema JSON
 
 const taskjsonSchema = zodToJsonSchema(taskSchema);
@@ -34,6 +39,16 @@ const options = {
         Login: loginjsonSchema,
       },
     },
+    paths: {
+      ...authswaggerDocs.paths,
+      ...projectSwaggerDocs.paths,
+      ...taskSwaggerDocs.paths,
+    },
+    tags: [
+      ...authswaggerDocs.tags,
+      ...projectSwaggerDocs.tags,
+      ...taskSwaggerDocs.tags,
+    ],
   },
   apis: ["./src/routes/*.ts", "./src/controllers/*.ts"], // Asegúrate de que las rutas coincidan
 };
