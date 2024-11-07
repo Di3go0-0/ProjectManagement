@@ -6,6 +6,10 @@ import { verifyPassword } from "../services";
 export const register = async (req: Request, res: Response) => {
   const { mail, name, password } = req.body;
   try {
+    const userExist = await obtainUserRepo(mail);
+    if (userExist) {
+      res.status(400).json({ message: "User already exists" });
+    }
     const user = await registerRepo({ mail, name, password });
     if (!user) {
       res.status(400).json({ message: "Error creating user" });
