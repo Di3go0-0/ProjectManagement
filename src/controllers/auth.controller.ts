@@ -16,12 +16,13 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   const { mail, password } = req.body;
   try {
     const user = await obtainUserRepo(mail);
     if (!user) {
       res.status(404).json({ message: "User not found" });
+      return;
     }
     const userPassword = user.password as string;
 
@@ -29,6 +30,7 @@ export const login = async (req: Request, res: Response) => {
 
     if (!passwordMatch) {
       res.status(400).json({ message: "Invalid credentials" });
+      return;
     }
 
     const token = generateToken({ id: user.id, mail: user.mail });
@@ -55,22 +57,29 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
-export const validateUser = async (req: Request, res: Response) => {
+export const validateUser = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const cookie = req.cookies.token as string;
   if (!cookie) {
     res.status(400).json({ message: "No token found" });
-  }
-
-  const token = verifyToken(cookie);
-  if (token === null) {
-    res.status(400).json({ message: "Invalid token" });
+    return;
   }
 
   try {
+    const token = await verifyToken(cookie);
+    if (!token || !token.mail) {
+      res.status(400).json({ message: "Invalid token" });
+      return;
+    }
+
     const user = await obtainUserRepo(token.mail);
     if (!user) {
       res.status(404).json({ message: "User not found" });
+      return;
     }
+
     res.status(200).json({ message: "Validation successful", data: user.mail });
   } catch (error) {
     res.status(500).json({ message: "Error validating user" });
