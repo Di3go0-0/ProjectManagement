@@ -35,8 +35,9 @@ interface allTaskProps {
 export const getAllTasksRepo = async ({
   cookie,
 }: allTaskProps): Promise<ITask[] | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const tasks = await prisma.task.findMany({
       where: {
         userId: userId,
@@ -52,8 +53,9 @@ export const getTaskByIdRepo = async ({
   taskId,
   cookie,
 }: taskRepo): Promise<ITask | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const task = await prisma.task.findUnique({
       where: {
         id: taskId,
@@ -73,8 +75,9 @@ export const createTaskRepo = async ({
   cookie,
   projectId,
 }: createProps): Promise<ITask | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const task = await prisma.task.create({
       data: {
         title,
@@ -95,8 +98,9 @@ export const updateTaskRepo = async ({
   description,
   cookie,
 }: updateProps): Promise<ITask | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const task = await prisma.task.update({
       where: {
         id: taskId,
@@ -118,8 +122,9 @@ export const deleteTaskRepo = async ({
   taskId,
   cookie,
 }: deleteProps): Promise<ITask | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const task = await prisma.task.delete({
       where: {
         id: taskId,
@@ -137,8 +142,9 @@ export const toggleTaskRepo = async ({
   taskId,
   cookie,
 }: taskRepo): Promise<ITask | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const task = await prisma.task.findUnique({
       where: {
         id: taskId,

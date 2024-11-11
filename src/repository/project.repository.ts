@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { which } from "bun";
 import type { IProject } from "../interfaces";
 import { getUserId } from "../helpers";
 
@@ -31,8 +30,9 @@ interface deleteProps {
 export const getAllProjectsRepo = async (
   cookie: string,
 ): Promise<IProject[] | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const projects = await prisma.project.findMany({
       where: {
         userId: userId,
@@ -48,8 +48,10 @@ export const getProjectByIdRepo = async ({
   projectId,
   cookie,
 }: projectRepo): Promise<IProject | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
+
     const project = await prisma.project.findUnique({
       where: {
         id: projectId,
@@ -68,8 +70,9 @@ export const createProjectRepo = async ({
   description,
   cookie,
 }: createProps): Promise<IProject | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const project = await prisma.project.create({
       data: {
         title,
@@ -89,8 +92,9 @@ export const updateProjectRepo = async ({
   description,
   cookie,
 }: updateProps): Promise<IProject | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const project = await prisma.project.update({
       where: {
         id: projectId,
@@ -112,8 +116,9 @@ export const deleteProjectRepo = async ({
   projectId,
   cookie,
 }: deleteProps): Promise<IProject | null> => {
-  const userId = getUserId(cookie);
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
     const project = await prisma.project.delete({
       where: {
         id: projectId,
