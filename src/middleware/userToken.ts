@@ -4,11 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const userToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+export const userToken = async (req: Request, res: Response, next: NextFunction,): Promise<void> => {
   const cookie = req.cookies.token as string;
   if (!cookie) {
     res.status(400).json({ message: "No token found by middleware" });

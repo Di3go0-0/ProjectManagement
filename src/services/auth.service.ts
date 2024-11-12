@@ -5,10 +5,7 @@ interface verifyPasswordProps {
   userPassword: string;
 }
 
-export const verifyPassword = async ({
-  password,
-  userPassword,
-}: verifyPasswordProps): Promise<boolean> => {
+export const verifyPassword = async ({ password, userPassword, }: verifyPasswordProps): Promise<boolean> => {
   try {
     const passwordMatch = await bcrypt.compare(password, userPassword);
     if (!passwordMatch) return false;

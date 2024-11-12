@@ -32,9 +32,7 @@ interface allTaskProps {
   cookie: string;
 }
 
-export const getAllTasksRepo = async ({
-  cookie,
-}: allTaskProps): Promise<ITask[] | null> => {
+export const getAllTasksRepo = async ({ cookie, }: allTaskProps): Promise<ITask[] | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -49,10 +47,7 @@ export const getAllTasksRepo = async ({
   }
 };
 
-export const getTaskByIdRepo = async ({
-  taskId,
-  cookie,
-}: taskRepo): Promise<ITask | null> => {
+export const getTaskByIdRepo = async ({ taskId, cookie, }: taskRepo): Promise<ITask | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -69,12 +64,7 @@ export const getTaskByIdRepo = async ({
   }
 };
 
-export const createTaskRepo = async ({
-  title,
-  description,
-  cookie,
-  projectId,
-}: createProps): Promise<ITask | null> => {
+export const createTaskRepo = async ({ title, description, cookie, projectId, }: createProps): Promise<ITask | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -92,12 +82,7 @@ export const createTaskRepo = async ({
   }
 };
 
-export const updateTaskRepo = async ({
-  taskId,
-  title,
-  description,
-  cookie,
-}: updateProps): Promise<ITask | null> => {
+export const updateTaskRepo = async ({ taskId, title, description, cookie, }: updateProps): Promise<ITask | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -118,10 +103,7 @@ export const updateTaskRepo = async ({
   }
 };
 
-export const deleteTaskRepo = async ({
-  taskId,
-  cookie,
-}: deleteProps): Promise<ITask | null> => {
+export const deleteTaskRepo = async ({ taskId, cookie, }: deleteProps): Promise<ITask | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -138,10 +120,7 @@ export const deleteTaskRepo = async ({
   }
 };
 
-export const toggleTaskRepo = async ({
-  taskId,
-  cookie,
-}: taskRepo): Promise<ITask | null> => {
+export const toggleTaskRepo = async ({ taskId, cookie, }: taskRepo): Promise<ITask | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;

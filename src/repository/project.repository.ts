@@ -27,9 +27,7 @@ interface deleteProps {
   cookie: string;
 }
 
-export const getAllProjectsRepo = async (
-  cookie: string,
-): Promise<IProject[] | null> => {
+export const getAllProjectsRepo = async (cookie: string,): Promise<IProject[] | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -44,10 +42,7 @@ export const getAllProjectsRepo = async (
   }
 };
 
-export const getProjectByIdRepo = async ({
-  projectId,
-  cookie,
-}: projectRepo): Promise<IProject | null> => {
+export const getProjectByIdRepo = async ({ projectId, cookie, }: projectRepo): Promise<IProject | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -65,11 +60,7 @@ export const getProjectByIdRepo = async ({
   }
 };
 
-export const createProjectRepo = async ({
-  title,
-  description,
-  cookie,
-}: createProps): Promise<IProject | null> => {
+export const createProjectRepo = async ({ title, description, cookie, }: createProps): Promise<IProject | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -86,12 +77,7 @@ export const createProjectRepo = async ({
   }
 };
 
-export const updateProjectRepo = async ({
-  projectId,
-  title,
-  description,
-  cookie,
-}: updateProps): Promise<IProject | null> => {
+export const updateProjectRepo = async ({ projectId, title, description, cookie, }: updateProps): Promise<IProject | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;
@@ -112,10 +98,7 @@ export const updateProjectRepo = async ({
   }
 };
 
-export const deleteProjectRepo = async ({
-  projectId,
-  cookie,
-}: deleteProps): Promise<IProject | null> => {
+export const deleteProjectRepo = async ({ projectId, cookie, }: deleteProps): Promise<IProject | null> => {
   try {
     const userId = await getUserId(cookie);
     if (!userId) return null;

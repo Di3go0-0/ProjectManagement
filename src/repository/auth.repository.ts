@@ -11,11 +11,7 @@ interface RegisterProps {
   password: string;
 }
 
-export const registerRepo = async ({
-  mail,
-  name,
-  password,
-}: RegisterProps): Promise<IUser | null> => {
+export const registerRepo = async ({ mail, name, password, }: RegisterProps): Promise<IUser | null> => {
   const passwordHash = await bcrypt.hash(password, 10);
   try {
     const user = await prisma.user.create({
