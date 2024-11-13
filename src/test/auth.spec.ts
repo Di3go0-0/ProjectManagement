@@ -1,7 +1,8 @@
 import app from '../app';
 import supertest from 'supertest';
 import { faker } from '@faker-js/faker';
-import { registerRepo } from '../repository';
+import { registerRepo, obtainUserRepo } from '../repository';
+import bcrypt from "bcrypt";
 
 jest.mock('../repository');
 
@@ -43,6 +44,35 @@ describe('[/register]', () => {
   });
 });
 
+
+describe('[/login]', () => {
+  describe('login', () => {
+    it('should login a user', async () => {
+      const expectedStatusCode = 200;
+      const expectedMessage = "Login successful";
+
+      const passwordfaker = faker.internet.password();
+      const mailfaker = faker.internet.email();
+      const passwordHash = await bcrypt.hash(passwordfaker, 10);
+
+      // Config data
+      (obtainUserRepo as jest.Mock).mockResolvedValue({
+        mail: mailfaker,
+        password: passwordHash,
+      })
+
+      const reqbody = {
+        mail: mailfaker,
+        password: passwordfaker,
+      }
+
+      const response = await request.post('/login').send(reqbody);
+
+      expect(response.status).toBe(expectedStatusCode);
+      expect(response.body.message).toBe(expectedMessage);
+    });
+  });
+})
 
 // describe('Register', () => {
 //   test('should return 400 if email is not provided', async () => {
