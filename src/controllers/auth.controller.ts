@@ -61,10 +61,7 @@ export const logout = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Logout successful" });
 };
 
-export const validateUser = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
+export const validateUser = async (req: Request, res: Response,): Promise<void> => {
   const cookie = req.cookies.token as string;
   if (!cookie) {
     res.status(400).json({ message: "No token found" });
@@ -80,7 +77,7 @@ export const validateUser = async (
 
     const user = await obtainUserRepo(token.mail);
     if (!user) {
-      res.status(404).json({ message: "User not found" });
+      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
