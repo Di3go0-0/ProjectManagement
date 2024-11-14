@@ -51,3 +51,12 @@ export const CreateProject = (title: string, description: string, userId: number
   createdAt: formatDateToISOString(new Date()),
   updatedAt: formatDateToISOString(new Date()),
 })
+
+export const UpdatedProject = (projectId: number, title: string, description: string, userId: number): IProject => ({
+  id: projectId,
+  title: title,
+  description: description,
+  userId: userId,
+  createdAt: formatDateToISOString(new Date()),
+  updatedAt: formatDateToISOString(new Date()),
+})
