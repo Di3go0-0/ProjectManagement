@@ -3,8 +3,7 @@ import supertest from "supertest";
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { getProjectByIdRepo } from "../../repository";
-import { AuthenticatedUser } from "../HelperTest/AuthenticatedUser";
-
+import { AuthenticatedUser, Project } from "../HelperTest";
 
 jest.mock('../../helpers', () => ({
   generateToken: jest.fn(),
@@ -40,28 +39,6 @@ const clearMocks = () => {
   jest.clearAllMocks()
 }
 
-interface IProject {
-  id: number;
-  title: string;
-  description: string;
-  userId: number;
-  createdAt: string,
-  updatedAt: string,
-}
-
-const formatDateToISOString = (date: Date) => {
-  // Redondea la fecha a segundos eliminando los milisegundos
-  return new Date(Math.floor(date.getTime() / 1000) * 1000).toISOString();
-};
-
-const Project = (Id: number, userId: number): IProject => ({
-  id: Id,
-  title: faker.lorem.words(),
-  description: faker.lorem.sentence(),
-  userId: userId,
-  createdAt: formatDateToISOString(new Date()),
-  updatedAt: formatDateToISOString(new Date()),
-})
 
 describe(' GET /projects/:id', () => {
   describe('When the user is not authenticated', () => {

@@ -3,7 +3,7 @@ import supertest from "supertest";
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { getAllProjectsRepo } from "../../repository";
-import { AuthenticatedUser } from "../HelperTest/AuthenticatedUser";
+import { AuthenticatedUser, ProjectList } from "../HelperTest";
 
 
 
@@ -40,40 +40,6 @@ const prisma = new PrismaClient();
 const clearMocks = () => {
   jest.clearAllMocks()
 }
-
-interface IProject {
-  id: number;
-  title: string;
-  description: string;
-  userId: number;
-  createdAt: string,
-  updatedAt: string,
-}
-
-
-const formatDateToISOString = (date: Date) => {
-  // Redondea la fecha a segundos eliminando los milisegundos
-  return new Date(Math.floor(date.getTime() / 1000) * 1000).toISOString();
-};
-
-const ProjectList = (userId: number): IProject[] => [
-  {
-    id: faker.number.int(),
-    title: faker.lorem.words(),
-    description: faker.lorem.words(),
-    userId: userId,
-    createdAt: formatDateToISOString(new Date()),
-    updatedAt: formatDateToISOString(new Date()),
-  },
-  {
-    id: faker.number.int(),
-    title: faker.lorem.words(),
-    description: faker.lorem.words(),
-    userId: userId,
-    createdAt: formatDateToISOString(new Date()),
-    updatedAt: formatDateToISOString(new Date()),
-  },
-];
 
 describe(' GET /project - Retrieve Projects', () => {
   describe('getAllProjects', () => {
