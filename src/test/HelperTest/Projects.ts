@@ -42,3 +42,12 @@ export const ProjectList = (userId: number): IProject[] => [
   },
 ];
 
+
+export const CreateProject = (title: string, description: string, userId: number): IProject => ({
+  id: userId,
+  title: title,
+  description: description,
+  userId: faker.number.int(),
+  createdAt: formatDateToISOString(new Date()),
+  updatedAt: formatDateToISOString(new Date()),
+})
