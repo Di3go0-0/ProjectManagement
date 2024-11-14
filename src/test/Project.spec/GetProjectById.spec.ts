@@ -1,6 +1,5 @@
 import app from "../../app";
 import supertest from "supertest";
-import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { getProjectByIdRepo } from "../../repository";
 import { AuthenticatedUser, Project } from "../HelperTest";
@@ -33,7 +32,6 @@ jest.mock('../../repository', () => ({
 }));
 
 const request = supertest(app);
-const prisma = new PrismaClient();
 
 const clearMocks = () => {
   jest.clearAllMocks()
@@ -41,7 +39,7 @@ const clearMocks = () => {
 
 
 describe(' GET /projects/:id', () => {
-  describe('When the user is not authenticated', () => {
+  describe('Get Project by Id', () => {
     it('should return 400 and an error message if no token is provided', async () => {
       const response = await request.get('/project/1');
       expect(response.status).toBe(400);
