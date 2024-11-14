@@ -3,8 +3,7 @@ import supertest from "supertest";
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { getAllProjectsRepo } from "../../repository";
-import { generateToken, verifyToken, getUserId } from "../../helpers";
-import { obtainUserRepo } from "../../repository";
+import { AuthenticatedUser } from "../HelperTest/AuthenticatedUser";
 
 
 
@@ -76,35 +75,9 @@ const ProjectList = (userId: number): IProject[] => [
   },
 ];
 
-
-
-
-
-const AuthenticatedUser = (userID: number): string => {
-  const mailFaker = faker.internet.email();
-
-  const fakeUser = {
-    id: userID,
-    mail: mailFaker,
-    name: faker.person.firstName(),
-    password: faker.internet.password(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-  const token = generateToken(fakeUser);
-
-  (verifyToken as jest.Mock).mockResolvedValue(fakeUser);
-  (prisma.user.findUnique as jest.Mock).mockResolvedValue(fakeUser);
-
-  (obtainUserRepo as jest.Mock).mockResolvedValue(fakeUser);
-  (getUserId as jest.Mock).mockResolvedValue(userID);
-
-  return token;
-}
-
 describe(' GET /project - Retrieve Projects', () => {
   describe('getAllProjects', () => {
-    it('hould return 400 and an error message if no token is provided', async () => {
+    it('should return 400 and an error message if no token is provided', async () => {
       const expectedStatusCode = 400;
       const expectedMessage = "No token found by middleware"; // Ajuste aquí
 
