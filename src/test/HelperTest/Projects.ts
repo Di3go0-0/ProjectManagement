@@ -23,6 +23,16 @@ export const Project = (Id: number, userId: number): IProject => ({
   updatedAt: formatDateToISOString(new Date()),
 })
 
+export const ProjectId = (Id: number): IProject => ({
+  id: Id,
+  title: faker.lorem.words(),
+  description: faker.lorem.sentence(),
+  userId: faker.number.int(),
+  createdAt: formatDateToISOString(new Date()),
+  updatedAt: formatDateToISOString(new Date()),
+})
+
+
 export const ProjectList = (userId: number): IProject[] => [
   {
     id: faker.number.int(),
