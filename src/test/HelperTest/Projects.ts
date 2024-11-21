@@ -9,6 +9,17 @@ interface IProject {
   updatedAt: string,
 }
 
+interface ITask {
+  id: number;
+  title: string;
+  description: string;
+  done: boolean;
+  projectId: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const formatDateToISOString = (date: Date) => {
   // Redondea la fecha a segundos eliminando los milisegundos
   return new Date(Math.floor(date.getTime() / 1000) * 1000).toISOString();
@@ -70,3 +81,29 @@ export const UpdatedProject = (projectId: number, title: string, description: st
   createdAt: formatDateToISOString(new Date()),
   updatedAt: formatDateToISOString(new Date()),
 })
+
+
+export const TaskList = (userId: number, projectId: number): ITask[] => {
+  return [
+    {
+      id: faker.number.int(),
+      title: faker.lorem.words(),
+      description: faker.lorem.words(),
+      done: false,
+      projectId: projectId,
+      userId: userId,
+      createdAt: formatDateToISOString(new Date()),
+      updatedAt: formatDateToISOString(new Date()),
+    },
+    {
+      id: faker.number.int(),
+      title: faker.lorem.words(),
+      description: faker.lorem.words(),
+      done: false,
+      projectId: projectId,
+      userId: userId,
+      createdAt: formatDateToISOString(new Date()),
+      updatedAt: formatDateToISOString(new Date()),
+    },
+  ];
+}
