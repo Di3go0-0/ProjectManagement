@@ -2,8 +2,7 @@ import app from '../../app.ts'
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
 import { createTaskRepo, projectExists } from '../../repository'
-import { AuthenticatedUser } from '../HelperTest/AuthenticatedUser'
-import { CreateTask } from '../HelperTest'
+import { AuthenticatedUser, CreateTask } from '../HelperTest'
 
 jest.mock('../../helpers/', () => ({
   generateToken: jest.fn(),
