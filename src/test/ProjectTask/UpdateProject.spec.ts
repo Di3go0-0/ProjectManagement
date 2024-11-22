@@ -2,8 +2,7 @@ import app from "../../app";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
 import { updateProjectRepo } from "../../repository";
-import { AuthenticatedUser } from "../HelperTest";
-import { UpdatedProject } from '../HelperTest/Projects.ts'
+import { AuthenticatedUser, UpdatedProject } from '../HelperTest'
 
 
 jest.mock('../../helpers/', () => ({

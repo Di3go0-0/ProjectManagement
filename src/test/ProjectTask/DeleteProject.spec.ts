@@ -2,9 +2,7 @@ import app from "../../app";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
 import { deleteProjectRepo } from "../../repository";
-import { AuthenticatedUser } from "../HelperTest";
-import { ProjectId } from "../HelperTest";
-import e from "express";
+import { AuthenticatedUser, ProjectId } from "../HelperTest";
 
 jest.mock('../../helpers/', () => ({
   generateToken: jest.fn(),
