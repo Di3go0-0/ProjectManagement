@@ -63,4 +63,13 @@ export const CreateTask = (title: string, description: string, userId: number, p
   updatedAt: formatDateToISOString(new Date()),
 })
 
-
+export const UpdatedTask = (taskId: number, title: string, description: string, userId: number, ProjectId: number): ITask => ({
+  id: taskId,
+  title: title,
+  description: description,
+  done: false,
+  projectId: ProjectId,
+  userId: userId,
+  createdAt: formatDateToISOString(new Date()),
+  updatedAt: formatDateToISOString(new Date()),
+})
