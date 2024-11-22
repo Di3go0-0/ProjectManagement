@@ -51,3 +51,16 @@ export const TaskById = (taskId: number, userId: number): ITask => ({
   createdAt: formatDateToISOString(new Date()),
   updatedAt: formatDateToISOString(new Date()),
 })
+
+export const CreateTask = (title: string, description: string, userId: number, projectId: number): ITask => ({
+  id: faker.number.int(),
+  title: title,
+  description: description,
+  done: false,
+  projectId: projectId,
+  userId: userId,
+  createdAt: formatDateToISOString(new Date()),
+  updatedAt: formatDateToISOString(new Date()),
+})
+
+
