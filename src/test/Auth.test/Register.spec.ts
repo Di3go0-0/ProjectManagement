@@ -3,7 +3,6 @@ import supertest from 'supertest';
 import { faker } from '@faker-js/faker';
 import { registerRepo } from '../../repository';
 
-
 jest.mock('../../repository');
 
 const request = supertest(app);
@@ -14,12 +13,10 @@ describe('[/register]', () => {
       const expectedStatusCode = 201;
       const expectedMessage = "User created syccessfully";
 
-
       // fake data
       const passwordfaker = faker.internet.password();
       const mailfaker = faker.internet.email();
       const namefaker = faker.person.firstName();
-
 
       // Config data
       (registerRepo as jest.Mock).mockResolvedValue({

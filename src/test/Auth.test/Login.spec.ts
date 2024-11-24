@@ -4,11 +4,9 @@ import { faker } from '@faker-js/faker';
 import { obtainUserRepo } from '../../repository';
 import bcrypt from "bcrypt";
 
-
 jest.mock('../../repository');
 
 const request = supertest(app);
-
 
 describe('[/login]', () => {
   describe('login', () => {
