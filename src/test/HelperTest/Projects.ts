@@ -9,7 +9,6 @@ interface IProject {
   updatedAt: string,
 }
 
-
 const formatDateToISOString = (date: Date) => {
   // Redondea la fecha a segundos eliminando los milisegundos
   return new Date(Math.floor(date.getTime() / 1000) * 1000).toISOString();
@@ -33,7 +32,6 @@ export const ProjectId = (Id: number): IProject => ({
   updatedAt: formatDateToISOString(new Date()),
 })
 
-
 export const ProjectList = (userId: number): IProject[] => [
   {
     id: faker.number.int(),
@@ -52,7 +50,6 @@ export const ProjectList = (userId: number): IProject[] => [
     updatedAt: formatDateToISOString(new Date()),
   },
 ];
-
 
 export const CreateProject = (title: string, description: string, userId: number): IProject => ({
   id: userId,

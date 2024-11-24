@@ -1,4 +1,3 @@
-
 import { faker } from '@faker-js/faker';
 import { generateToken, verifyToken, getUserId } from "../../helpers";
 import { PrismaClient } from "@prisma/client";
