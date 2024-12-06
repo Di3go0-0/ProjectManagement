@@ -1,0 +1,52 @@
+.custom-button {
+  color: #fff;
+  background-color: transparent;
+  padding: 12px 25px;
+  margin: 5px 0px;
+  margin-right: 7px;
+  border-radius: 30px;
+  border: 2px solid #fff;
+  box-shadow: 0 10px 10px -8px rgb(0 0 0 / 78%);
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-button:hover {
+  cursor: pointer;
+}
+
+.active {
+  border-color: #fff;
+}
+
+.custom-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%);
+  transform: translateX(-100%);
+}
+
+@keyframes lightWave {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.custom-button:hover::before {
+  animation: lightWave 1s ease-in-out;
+}

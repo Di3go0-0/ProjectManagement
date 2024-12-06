@@ -1,0 +1,14 @@
+body {
+  background-color: #e9ecef;
+  font-family: Arial, sans-serif;
+}
+
+.Register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  height: 100vh;
+
+  overflow: hidden;
+}

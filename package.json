@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "backInstall": "cd back && bun install",
+    "backStart": "cd back && bun start",
+    "backDev": "cd back && bun run dev",
+    "frontInstall": "cd front && bun install",
+    "frontDev": "cd front && bun run dev",
+    "frontStart": "cd front && bun start",
+    "install": "bun run backInstall && bun run frontInstall",
+    "start": "bun run backStart && bun run frontStart",
+    "dev": "bun run backDev && bun run frontDev"
+  }
+}

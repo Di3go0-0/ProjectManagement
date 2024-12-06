@@ -1,0 +1,43 @@
+.form-group {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.form-group label {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  font-weight: 500;
+  background: transparent;
+}
+
+.form-control {
+  background-color: rgba(0, 0, 0, 0.35);
+  width: 100%;
+  padding: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #767676;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.form-control:focus {
+  color: #767676;
+  border-color: #495057;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  background: transparent;
+}
