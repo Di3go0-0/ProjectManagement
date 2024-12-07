@@ -3,6 +3,6 @@ import { IRegister } from "../../Interfaces";
 
 
 
-export const RegisterRequest = (User: IRegister) => {
-  axios.post(`/register`, User);
+export const RegisterRequest = async (User: IRegister) => {
+  await axios.post(`/register`, { User });
 }
