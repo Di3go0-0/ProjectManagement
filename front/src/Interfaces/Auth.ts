@@ -9,3 +9,9 @@ export interface ILogin {
   "mail": string,
   "password": string
 }
+
+export interface IUser {
+  "id": number,
+  "mail": string,
+  "name": string,
+}
