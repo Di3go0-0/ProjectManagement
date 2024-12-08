@@ -3,8 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormValues, RegisterSchema } from "../../../Models";
 import './RegisterForm.css'
 import InputForm from "../../CustomInput/CustomInput";
+import { IRegister } from "../../../Interfaces";
+import { Link } from "react-router-dom";
 
-const RegisterForm = () => {
+interface Props {
+  handleSingIn: (user: IRegister) => void;
+}
+
+const RegisterForm = ({ handleSingIn }: Props) => {
   const { control, handleSubmit, formState: { errors }, } = useForm<FormValues>({
     resolver: zodResolver(RegisterSchema),
     mode: "onBlur",
@@ -17,8 +23,10 @@ const RegisterForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    handleSingIn(data)
   };
+
+
 
   return (
     <div className="Form">
@@ -54,18 +62,17 @@ const RegisterForm = () => {
         />
 
         <div className="Buttons">
-          <button type="submit" className="Button-submit">
+          <button type="submit" className="Button-submit" >
             Register
           </button>
 
 
-          <button type="button" className="Button-submit">
-            Login
-          </button>
+          <Link to={'/login'} className="Button-submit">Login</Link>
+
 
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };
 
