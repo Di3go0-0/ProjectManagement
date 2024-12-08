@@ -2,21 +2,29 @@ import type { Request, Response } from "express";
 import { generateToken, verifyToken } from "../helpers";
 import { obtainUserRepo, registerRepo } from "../repository";
 import { verifyPassword } from "../services";
+import { IUser } from "../interfaces";
+
+interface User {
+  id: number;
+  mail: string;
+  name: string;
+}
 
 export const register = async (req: Request, res: Response) => {
   const { mail, name, password } = req.body;
   try {
     const userExist = await obtainUserRepo(mail);
     if (userExist) {
-      res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
-    const user = await registerRepo({ mail, name, password });
+    const user: IUser | null = await registerRepo({ mail, name, password });
     if (!user) {
-      res.status(400).json({ message: "Error creating user" });
+      return res.status(400).json({ message: "Error creating user" });
     }
-    res.status(201).json({ data: user, message: "User created syccessfully" });
+    const userCreated: User = { id: user.id, mail: user.mail, name: user.name as string };
+    return res.status(201).json({ data: userCreated, message: "User created successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error creating user" });
+    return res.status(500).json({ message: "Error creating user" });
   }
 };
 
@@ -80,8 +88,8 @@ export const validateUser = async (req: Request, res: Response,): Promise<void> 
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
-
-    res.status(200).json({ message: "Validation successful", data: user.mail });
+    const data = { id: user.id, mail: user.mail, name: user.name };
+    res.status(200).json({ message: "Validation successful", data: data });
   } catch (error) {
     res.status(500).json({ message: "Error validating user" });
   }
