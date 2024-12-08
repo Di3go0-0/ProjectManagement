@@ -1,11 +1,10 @@
 .form-group {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  background: transparent;
 }
 
 .form-group label {
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   color: white;
@@ -21,15 +20,15 @@
   line-height: 1.5;
   color: #767676;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0;
 }
 
 .form-control:focus {
   color: #767676;
   border-color: #495057;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .form-control.is-invalid {
