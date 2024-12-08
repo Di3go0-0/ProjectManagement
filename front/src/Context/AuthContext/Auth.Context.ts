@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
-import { IRegister, IUser } from "../../Interfaces";
+import { ILogin, IRegister, IUser } from "../../Interfaces";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  signIn: (user: IRegister) => void;
+  SingIn: (user: ILogin) => void;
+  signUp: (user: IRegister) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   user: IUser | null;
   errors: string[];

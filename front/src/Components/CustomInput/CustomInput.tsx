@@ -1,34 +1,34 @@
-import { Control, Controller, FieldError } from "react-hook-form";
+import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
 import "./CustomInput.css";
-import { FormValues } from "../../Models";
 
-interface Props {
-  name: keyof FormValues;
-  control: Control<FormValues>;
+interface Props<T extends FieldValues> {
+  name: keyof T;
+  control: Control<T>;
   label: string;
   type?: string;
   error?: FieldError;
 }
 
-const InputForm = ({ name, control, label, type, error }: Props) => {
+const InputForm = <T extends FieldValues>({ name, control, label, type, error }: Props<T>) => {
   return (
     <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={String(name)}>{label}</label>
+      {error && <p className="error">{error.message}</p>}
       <Controller
-        name={name}
+        name={name as Path<T>}
         control={control}
         render={({ field }) => (
           <input
-            id={name}
+            id={String(name)}
             type={type}
             {...field}
             className={`form-control ${error ? "is-invalid" : ""}`}
           />
         )}
       />
-      {error && <p className="error">{error.message}</p>}
     </div>
   );
 };
 
 export default InputForm;
+

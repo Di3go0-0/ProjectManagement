@@ -2,15 +2,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormValues, RegisterSchema } from "../../../Models";
 import './RegisterForm.css'
-import InputForm from "../../CustomInput/CustomInput";
 import { IRegister } from "../../../Interfaces";
 import { Link } from "react-router-dom";
+import InputForm from "../../CustomInput/CustomInput";
 
 interface Props {
-  handleSingIn: (user: IRegister) => void;
+  handleSingUp: (user: IRegister) => void;
 }
 
-const RegisterForm = ({ handleSingIn }: Props) => {
+export const RegisterForm = ({ handleSingUp }: Props) => {
   const { control, handleSubmit, formState: { errors }, } = useForm<FormValues>({
     resolver: zodResolver(RegisterSchema),
     mode: "onBlur",
@@ -23,11 +23,8 @@ const RegisterForm = ({ handleSingIn }: Props) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    handleSingIn(data)
+    handleSingUp(data)
   };
-
-
-
   return (
     <div className="Form">
       <h1>Register</h1>
@@ -65,15 +62,10 @@ const RegisterForm = ({ handleSingIn }: Props) => {
           <button type="submit" className="Button-submit" >
             Register
           </button>
-
-
           <Link to={'/login'} className="Button-submit">Login</Link>
-
-
         </div>
       </form >
     </div >
   );
 };
 
-export default RegisterForm;

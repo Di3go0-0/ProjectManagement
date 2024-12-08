@@ -1,12 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
-
+import { useAuth } from "../Context";
+import { useEffect, useState } from "react";
 
 export const PrivateGuard = () => {
-  const autenticated = false;
+  const { isAuthenticated } = useAuth();
+  const [authStatus, setAuthStatus] = useState(isAuthenticated);
 
-  //Outlet is a component that renders the children of the parent route.
-  //replace the url in its entirety 
-  return autenticated ? <Outlet /> : <Navigate to="/login" replace />
+  useEffect(() => {
+    setAuthStatus(isAuthenticated);
+  }, [isAuthenticated]);
+
+  return authStatus ? <Outlet /> : <Navigate to="/login" replace />
 }
 
 

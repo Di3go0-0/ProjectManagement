@@ -1,5 +1,4 @@
-export * from './Public/Login/Login.tsx'
-export * from './Public/Register/Register.tsx'
+export * from './CustomForms'
+export * from './CustomInput/CustomInput.tsx'
 
 
-export * from './Button/Button.tsx'

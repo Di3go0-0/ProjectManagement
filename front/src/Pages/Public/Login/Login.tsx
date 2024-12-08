@@ -1,13 +1,23 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LoginForm } from '../../../Components';
+import { useAuth } from '../../../Context';
+import './Login.css'
+
+export const Login = () => {
+  const { SingIn, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home/");
+    }
+  }, [isAuthenticated]);
 
 
-
-const Login = () => {
   return (
-    <>
-      <h1>Login</h1>
-    </>
+    <div className="login-container">
+      <LoginForm handleSingIn={SingIn} />
+    </div>
   )
 }
-
-
-export default Login;
