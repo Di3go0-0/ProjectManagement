@@ -61,6 +61,9 @@ export const AuthProvider = ({ children }: Props) => {
       }
     }
   }
+
+
+
   return (
     <AuthContext.Provider value={{ isAuthenticated, SingIn, signUp, setIsAuthenticated, user, errors }}>
       {children}
