@@ -10,9 +10,9 @@ export const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/home/");
+      navigate("/private/home/");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
 
   return (
