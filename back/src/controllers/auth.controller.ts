@@ -33,7 +33,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await obtainUserRepo(mail);
     if (!user) {
-      res.status(404).json({ message: "User not found" });
+      res.status(404).json({
+        message: "User not found",
+        mail: "Invalid mail",
+      });
       return;
     }
     const userPassword = user.password as string;
@@ -41,7 +44,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const passwordMatch = await verifyPassword({ password, userPassword });
 
     if (!passwordMatch) {
-      res.status(400).json({ message: "Invalid credentials" });
+      res.status(400).json({
+        message: "Invalid credentials",
+        passsword: "Incorrect password",
+      });
       return;
     }
 
