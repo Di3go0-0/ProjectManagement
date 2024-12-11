@@ -1,16 +1,16 @@
+import { useEffect } from "react"
 import { useAuth } from "../../../Context"
 
 
 export const Home = () => {
-  const { isAuthenticated, setIsAuthenticated } = useAuth()
-
-  console.log(isAuthenticated)
+  const { Logout } = useAuth()
 
 
   return (
     <div>
-      <h1>Home</h1>
-      <button onClick={() => setIsAuthenticated(false)}>Logout</button>
-    </div>
+      <h1>Homke</h1>
+
+      <button onClick={Logout}>Logout</button>
+    </div >
   )
 }
