@@ -23,7 +23,7 @@ export const LoginForm = ({ handleSingIn, serverErrors }: Props) => {
     },
   });
 
-  console.log(serverErrors);
+  // console.log(serverErrors);
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     handleSingIn(data);
