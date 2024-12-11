@@ -5,11 +5,14 @@ import { AuthProvider } from "./Context"
 
 const AppHookContainer = () => {
   return (
-    <AuthProvider>
-      <AppRouter>
-        <App />
-      </ AppRouter>
-    </AuthProvider >
+    <div className="gradient-background">
+      <AuthProvider>
+        <AppRouter>
+          <App />
+        </ AppRouter>
+      </AuthProvider >
+
+    </div>
   )
 }
 export default AppHookContainer;

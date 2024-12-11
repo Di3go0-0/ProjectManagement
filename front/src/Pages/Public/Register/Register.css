@@ -1,7 +1,7 @@
 .register-container {
   font-family: Arial, sans-serif;
-  background-image: url(../../../Resources/IMG/wallpaperflare-cropped.jpg);
-  background-size: cover;
+  /* background-image: url(../../../Resources/IMG/wallpaperflare-cropped.jpg); */
+  /* background-size: cover; */
 
 
 
@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   padding: 5px;
-  height: 100vh;
+  /* height: 100vh; */
 
   overflow: hidden;
 }
