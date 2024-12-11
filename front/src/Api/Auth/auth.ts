@@ -13,4 +13,12 @@ export const LoginRequest = async (User: ILogin) => {
   return response;
 }
 
+export const LogoutRequest = async () => {
+  const response = await axios.post(`/logout`);
+  return response;
+}
 
+export const ValidateUserRequest = async () => {
+  const response = await axios.post(`/validate`)
+  return response;
+}
