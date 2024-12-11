@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const userExist = await obtainUserRepo(mail);
     if (userExist) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists", mail: "mail already exists" });
     }
     const user: IUser | null = await registerRepo({ mail, name, password });
     if (!user) {
