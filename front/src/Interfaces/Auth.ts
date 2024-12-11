@@ -15,3 +15,11 @@ export interface IUser {
   "mail": string,
   "name": string,
 }
+
+export interface IAuthErrors {
+  message?: string;
+  mail?: string;
+  password?: string;
+}
+
+
