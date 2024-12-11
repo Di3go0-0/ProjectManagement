@@ -56,7 +56,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const token = generateToken({ id: user.id, mail: user.mail });
 
     res.cookie("token", token, {
-      httpOnly: true,
+      // httpOnly: true,
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
       path: "/",
