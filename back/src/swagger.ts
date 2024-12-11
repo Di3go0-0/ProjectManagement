@@ -16,8 +16,6 @@ const registerjsonSchema = zodToJsonSchema(registerSchema);
 const loginjsonSchema = zodToJsonSchema(loginSchema);
 const projectjsonSchema = zodToJsonSchema(projectSchema);
 
-console.log(JSON.stringify(taskjsonSchema, null, 2));
-
 const options = {
   definition: {
     openapi: "3.0.0",

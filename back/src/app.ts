@@ -9,7 +9,6 @@ const clientURL = process.env.CLIENT_URL as string;
 const app = express();
 app.use(cors({
   origin: "http://localhost:5173",
-
   credentials: true
 }));
 
