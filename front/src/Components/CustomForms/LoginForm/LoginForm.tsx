@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ILogin } from "../../../Interfaces";
+import { IAuthErrors, ILogin } from "../../../Interfaces";
 import { LoginFormValues, LoginSchema } from "../../../Models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputForm from "../../CustomInput/CustomInput";
@@ -8,11 +8,12 @@ import './LoginForm.css'
 
 interface Props {
   handleSingIn: (user: ILogin) => void;
+  serverErrors: IAuthErrors;
 }
 
 
 
-export const LoginForm = ({ handleSingIn }: Props) => {
+export const LoginForm = ({ handleSingIn, serverErrors }: Props) => {
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     mode: "onBlur",
@@ -21,6 +22,8 @@ export const LoginForm = ({ handleSingIn }: Props) => {
       password: "",
     },
   });
+
+  console.log(serverErrors);
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
     handleSingIn(data);
@@ -37,7 +40,7 @@ export const LoginForm = ({ handleSingIn }: Props) => {
           type="email"
           error={errors.mail}
         />
-
+        {serverErrors && <p className="error">{serverErrors.mail}</p>}
         <InputForm
           name="password"
           control={control}
@@ -45,7 +48,7 @@ export const LoginForm = ({ handleSingIn }: Props) => {
           type="password"
           error={errors.password}
         />
-
+        {serverErrors && <p className="error">{serverErrors.password}</p>}
         <div className="Buttons">
           <button className="Button-submit" type="submit">Login</button>
           <Link to={"/register"} className="Button-submit">Register</Link>
