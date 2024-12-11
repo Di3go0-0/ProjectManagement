@@ -4,7 +4,8 @@ import { IAuthErrors, ILogin, IRegister, IUser } from "../../Interfaces";
 interface AuthContextType {
   isAuthenticated: boolean;
   SingIn: (user: ILogin) => void;
-  signUp: (user: IRegister) => void;
+  SignUp: (user: IRegister) => void;
+  Logout: () => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   user: IUser | null;
   errors: IAuthErrors;

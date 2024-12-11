@@ -1,8 +1,9 @@
 import { ReactNode, useEffect, useState } from "react";
 import { IAuthErrors, ILogin, IRegister, IUser } from "../../Interfaces";
-import { LoginRequest, RegisterRequest } from "../../Api";
+import { LoginRequest, LogoutRequest, RegisterRequest, ValidateUserRequest } from "../../Api";
 import { AuthContext } from "./Auth.Context";
 import { AxiosError } from "axios";
+import Cookies from "js-cookie";
 
 
 interface Props {
@@ -16,23 +17,23 @@ export const AuthProvider = ({ children }: Props) => {
   const [errors, setErrors] = useState<IAuthErrors>({});
 
 
-  const signUp = async (user: IRegister) => {
+  const SignUp = async (user: IRegister) => {
     try {
       const res = await RegisterRequest(user);
-      console.log("Server Response:", res.data); // Imprime la respuesta completa del servidor
+      // console.log("Server Response:", res.data); // Imprime la respuesta completa del servidor
       setIsAuthenticated(true);
       const userResponse: IUser = res.data.data;
       setUser(userResponse);
-      console.log("User:", userResponse); // Imprime el usuario creado
+      // console.log("User:", userResponse); // Imprime el usuario creado
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response && Array.isArray(e.response.data)) {
-          console.log(e.response.data);
+          // console.log(e.response.data);
           return setErrors({ message: e.response.data[0] });
         }
         if (e.response && e.response.data?.mail) {
           setErrors({ mail: e.response.data.mail });
-          console.log(e.response.data.mail);
+          // console.log(e.response.data.mail);
         }
       }
       else {
@@ -44,24 +45,24 @@ export const AuthProvider = ({ children }: Props) => {
   const SingIn = async (user: ILogin) => {
     try {
       const res = await LoginRequest(user);
-      console.log("Server Response:", res.data); // Imprime la respuesta completa del servidor
+      // console.log("Server Response:", res.data); // Imprime la respuesta completa del servidor
       setIsAuthenticated(true);
       const userResponse: IUser = res.data.data;
       setUser(userResponse);
-      console.log("User:", userResponse); // Imprime el usuario logueado 
+      // console.log("User:", userResponse); // Imprime el usuario logueado 
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e instanceof AxiosError) {
           if (e.response && Array.isArray(e.response.data)) {
-            console.log(e.response.data);
+            // console.log(e.response.data);
             return setErrors({ message: e.response.data[0] });
           }
           if (e.response && e.response.data?.password) {
             setErrors({ password: e.response.data.password });
-            console.log(e.response.data.password);
+            // console.log(e.response.data.password);
           } if (e.response && e.response.data?.mail) {
             setErrors({ mail: e.response.data.mail });
-            console.log(e.response.data.mail);
+            // console.log(e.response.data.mail);
           }
         }
       }
@@ -71,6 +72,57 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
+  const Logout = async () => {
+    try {
+      await LogoutRequest();
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log(`Error for cookie`)
+        return
+      }
+      console.log(`Unexpected error`)
+    }
+    Cookies.remove('token');
+    setIsAuthenticated(false);
+    setUser(null);
+
+  }
+
+  const ValidateUser = async () => {
+    const cookies = Cookies.get();
+    if (!cookies) {
+      setIsAuthenticated(false);
+      return;
+    }
+
+    try {
+      const res = await ValidateUserRequest();
+      setIsAuthenticated(true);
+      const userResponse: IUser = res.data.data;
+      setUser(userResponse);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log(e)
+        setIsAuthenticated(false);
+      }
+      else {
+        console.error("Unexpected error", e);
+        setIsAuthenticated(false);
+      }
+    }
+  }
+
+
+
+  useEffect(() => {
+    const token = Cookies.get(`token`);
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
+    ValidateUser();
+  }, []);
+
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       const timer = setTimeout(() => {
@@ -78,12 +130,12 @@ export const AuthProvider = ({ children }: Props) => {
       }, 4000);
       return () => clearTimeout(timer);
     }
-    console.log(errors);
+    // console.log(errors);
   }, [errors])
 
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, SingIn, signUp, setIsAuthenticated, user, errors }}>
+    <AuthContext.Provider value={{ isAuthenticated, SingIn, SignUp, Logout, setIsAuthenticated, user, errors }}>
       {children}
     </AuthContext.Provider>
   )
