@@ -2,15 +2,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormValues, RegisterSchema } from "../../../Models";
 import './RegisterForm.css'
-import { IRegister } from "../../../Interfaces";
+import { IAuthErrors, IRegister } from "../../../Interfaces";
 import { Link } from "react-router-dom";
 import InputForm from "../../CustomInput/CustomInput";
 
 interface Props {
   handleSingUp: (user: IRegister) => void;
+  serverErrors: IAuthErrors;
 }
 
-export const RegisterForm = ({ handleSingUp }: Props) => {
+export const RegisterForm = ({ handleSingUp, serverErrors }: Props) => {
   const { control, handleSubmit, formState: { errors }, } = useForm<FormValues>({
     resolver: zodResolver(RegisterSchema),
     mode: "onBlur",
@@ -43,6 +44,7 @@ export const RegisterForm = ({ handleSingUp }: Props) => {
           type="email"
           error={errors.mail}
         />
+        {serverErrors && <p className="error">{serverErrors.mail}</p>}
         <InputForm
           name="password"
           control={control}
