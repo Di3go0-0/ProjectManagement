@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { IErrors, ILogin, IRegister, IUser } from "../../Interfaces";
+import { IAuthErrors, ILogin, IRegister, IUser } from "../../Interfaces";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -7,7 +7,7 @@ interface AuthContextType {
   signUp: (user: IRegister) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   user: IUser | null;
-  errors: IErrors;
+  errors: IAuthErrors;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
