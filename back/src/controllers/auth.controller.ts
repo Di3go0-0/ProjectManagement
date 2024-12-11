@@ -46,10 +46,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (!passwordMatch) {
       res.status(400).json({
         message: "Invalid credentials",
-        passsword: "Incorrect password",
+        password: "Incorrect password",
       });
       return;
     }
+
+    const userLogged: User = { id: user.id, mail: user.mail, name: user.name as string };
 
     const token = generateToken({ id: user.id, mail: user.mail });
 
@@ -60,7 +62,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       path: "/",
     });
 
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ data: userLogged, message: "Login successful" });
   } catch (error) {
     res.status(500).json({ message: "Error logging in" });
   }
