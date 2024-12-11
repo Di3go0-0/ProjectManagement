@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-import { ILogin, IRegister, IUser } from "../../Interfaces";
+import { ReactNode, useEffect, useState } from "react";
+import { IErrors, ILogin, IRegister, IUser } from "../../Interfaces";
 import { LoginRequest, RegisterRequest } from "../../Api";
 import { AuthContext } from "./Auth.Context";
 import { AxiosError } from "axios";
@@ -13,7 +13,7 @@ interface Props {
 export const AuthProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<IErrors>({});
 
   const signUp = async (user: IRegister) => {
     try {
@@ -27,11 +27,11 @@ export const AuthProvider = ({ children }: Props) => {
       if (e instanceof AxiosError) {
         if (e.response && Array.isArray(e.response.data)) {
           console.log(e.response.data);
-          return setErrors(e.response.data);
+          return setErrors({ message: e.response.data[0] });
         }
-        if (e.response && e.response.data?.message) {
-          setErrors([e.response.data.message]);
-          console.log(e.response.data.message);
+        if (e.response && e.response.data?.mail) {
+          setErrors({ mail: e.response.data.mail });
+          console.log(e.response.data.mail);
         }
       }
       else {
@@ -49,10 +49,10 @@ export const AuthProvider = ({ children }: Props) => {
       if (e instanceof AxiosError) {
         if (e.response && Array.isArray(e.response.data)) {
           console.log(e.response.data);
-          return setErrors(e.response.data);
+          return setErrors({ message: e.response.data[0] });
         }
         if (e.response && e.response.data?.message) {
-          setErrors([e.response.data.message]);
+          setErrors({ message: e.response.data.message });
           console.log(e.response.data.message);
         }
       }
@@ -62,6 +62,15 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const timer = setTimeout(() => {
+        setErrors({});
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+    console.log(errors);
+  }, [errors])
 
 
   return (
