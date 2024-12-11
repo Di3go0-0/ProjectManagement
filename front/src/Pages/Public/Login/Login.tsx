@@ -5,7 +5,7 @@ import { useAuth } from '../../../Context';
 import './Login.css'
 
 export const Login = () => {
-  const { SingIn, isAuthenticated } = useAuth();
+  const { SingIn, isAuthenticated, errors } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const Login = () => {
 
   return (
     <div className="login-container">
-      <LoginForm handleSingIn={SingIn} />
+      <LoginForm handleSingIn={SingIn} serverErrors={errors} />
     </div>
   )
 }
