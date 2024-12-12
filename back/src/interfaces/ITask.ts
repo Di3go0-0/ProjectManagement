@@ -3,6 +3,6 @@ export interface ITask {
   title: string;
   description: string;
   done: boolean;
-  projectId: number;
   userId: number;
+  projectId: number;
 }
