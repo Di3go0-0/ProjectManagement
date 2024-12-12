@@ -5,19 +5,19 @@ import './Register.css'
 import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
-  const { signUp, isAuthenticated, errors } = useAuth();
+  const { SignUp, isRegistered, errors } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/private/home/");
+    if (isRegistered) {
+      navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isRegistered, navigate]);
 
 
   return (
     <div className="register-container">
-      <RegisterForm handleSingUp={signUp} serverErrors={errors} />
+      <RegisterForm handleSingUp={SignUp} serverErrors={errors} />
     </div>
   )
 }
