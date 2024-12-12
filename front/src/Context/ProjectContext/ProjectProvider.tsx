@@ -13,7 +13,6 @@ export const ProjectProvider = ({ children }: Props) => {
   const GetProjects = async () => {
     try {
       const response = await GetProjectsRequest();
-      // setProjects(response.data.data)
       // console.log(response.data)
       setProjects(response.data)
     } catch (e) {
