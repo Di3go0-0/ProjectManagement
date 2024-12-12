@@ -1,0 +1,46 @@
+.home-container {
+  margin-top: 3rem;
+  min-height: 90vh;
+  width: 100%;
+  background: radial-gradient(ellipse at center, #2d1b4e 0%, #1a1a2e 100%);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  padding: 2rem;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+@media (max-width: 768px) {
+  .project-cards {
+    grid-template-columns: 1fr;
+  }
+}
