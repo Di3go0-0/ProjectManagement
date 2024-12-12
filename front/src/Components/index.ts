@@ -1,4 +1,5 @@
 export * from './CustomForms'
 export * from './CustomInput/CustomInput.tsx'
 export * from './Routes'
-
+export * from './Projects'
+export * from './Navbar/Nav.tsx'
