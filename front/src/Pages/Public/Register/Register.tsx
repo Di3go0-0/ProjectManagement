@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { RegisterForm } from '../../../Components';
 import { useAuth } from '../../../Context';
-import './Register.css'
 import { useNavigate } from 'react-router-dom';
+import '../Css/Auth.css'
 
 export const Register = () => {
   const { SignUp, isRegistered, errors } = useAuth();
@@ -16,7 +16,7 @@ export const Register = () => {
 
 
   return (
-    <div className="register-container">
+    <div className='gradient-background'>
       <RegisterForm handleSingUp={SignUp} serverErrors={errors} />
     </div>
   )

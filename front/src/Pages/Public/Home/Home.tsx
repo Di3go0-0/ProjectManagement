@@ -1,22 +1,17 @@
-import { useEffect } from "react"
-import { useAuth, useProject } from "../../../Context"
+import { useProject } from "../../../Context"
 import './Home.css'
-import { Navbar, ProjectCard } from "../../../Components"
+import { ProjectCard } from "../../../Components"
 
 
 export const Home = () => {
-  const { Logout } = useAuth()
   const { GetProjects, projects } = useProject()
-
-  useEffect(() => {
+  if (projects.length === 0) {
     GetProjects()
-  }, [GetProjects])
-
-  // console.log(projects)
+  }
+  console.log(projects)
 
   return (
     <>
-      <Navbar />
       <div className='home-container'>
         < h1 className='title' > Mis Proyectos</h1 >
         <div className='project-cards'>
@@ -24,7 +19,7 @@ export const Home = () => {
             <ProjectCard
               key={project.id}
               Project={project}
-              taskCount={10}
+              taskCount={project.tasks.length}
             />
           ))}
         </div>
