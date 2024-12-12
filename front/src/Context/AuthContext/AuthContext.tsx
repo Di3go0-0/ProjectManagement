@@ -15,28 +15,28 @@ export const AuthProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
   const [errors, setErrors] = useState<IAuthErrors>({});
-
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const SignUp = async (user: IRegister) => {
     try {
       const res = await RegisterRequest(user);
-      // console.log("Server Response:", res.data); // Imprime la respuesta completa del servidor
-      setIsAuthenticated(true);
       const userResponse: IUser = res.data.data;
       setUser(userResponse);
-      // console.log("User:", userResponse); // Imprime el usuario creado
+      setIsRegistered(true);
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response && Array.isArray(e.response.data)) {
           // console.log(e.response.data);
+          setIsRegistered(false);
           return setErrors({ message: e.response.data[0] });
         }
         if (e.response && e.response.data?.mail) {
-          setErrors({ mail: e.response.data.mail });
-          // console.log(e.response.data.mail);
+          setIsRegistered(false);
+          return setErrors({ mail: e.response.data.mail });
         }
       }
       else {
+        setIsRegistered(false);
         console.error("Unexpected error", e);
       }
     }
@@ -78,14 +78,13 @@ export const AuthProvider = ({ children }: Props) => {
     } catch (e) {
       if (e instanceof AxiosError) {
         console.log(`Error for cookie`)
-        return
+      } else {
+        console.log(`Unexpected error`)
       }
-      console.log(`Unexpected error`)
     }
     Cookies.remove('token');
     setIsAuthenticated(false);
     setUser(null);
-
   }
 
   const ValidateUser = async () => {
@@ -135,7 +134,7 @@ export const AuthProvider = ({ children }: Props) => {
 
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, SingIn, SignUp, Logout, setIsAuthenticated, user, errors }}>
+    <AuthContext.Provider value={{ isAuthenticated, SingIn, SignUp, Logout, setIsAuthenticated, user, errors, isRegistered }}>
       {children}
     </AuthContext.Provider>
   )
