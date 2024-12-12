@@ -35,6 +35,9 @@ export const getAllProjectsRepo = async (cookie: string,): Promise<IProject[] | 
       where: {
         userId: userId,
       },
+      include: {
+        tasks: true,
+      },
     });
     return projects;
   } catch {
@@ -52,6 +55,10 @@ export const getProjectByIdRepo = async ({ projectId, cookie, }: projectRepo): P
         id: projectId,
         userId: userId,
       },
+      include: {
+        tasks: true,
+      },
+
     });
     if (!project) return null;
     return project;
@@ -69,6 +76,9 @@ export const createProjectRepo = async ({ title, description, cookie, }: createP
         title,
         description,
         userId,
+      },
+      include: {
+        tasks: true,
       },
     });
     return project;
@@ -89,6 +99,8 @@ export const updateProjectRepo = async ({ projectId, title, description, cookie,
       data: {
         title,
         description,
+      }, include: {
+        tasks: true,
       },
     });
     if (!project) return null;
@@ -106,6 +118,8 @@ export const deleteProjectRepo = async ({ projectId, cookie, }: deleteProps): Pr
       where: {
         id: projectId,
         userId: userId,
+      }, include: {
+        tasks: true,
       },
     });
     if (!project) return null;
