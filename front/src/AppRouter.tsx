@@ -13,11 +13,11 @@ export const AppRouter = ({ children }: Props) => {
     <>
       <BrowserRouter>
         <RoutesWithNotFound>
-          {/* <Route path="/" element={<Navigate to="/login" />} /> */}
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/*" element={<PublicRoutes />} />
-          <Route element={<PrivateGuard />}>
-            <Route path="/private/*" element={<PrivateRouter />} />
-          </Route>
+          {/* <Route element={<PrivateGuard />}> */}
+          <Route path="/private/*" element={<PrivateRouter />} />
+          {/* </Route> */}
         </RoutesWithNotFound>
         {children}
       </BrowserRouter >
