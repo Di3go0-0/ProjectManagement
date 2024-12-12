@@ -1,18 +1,20 @@
 import App from "./App"
 import { AppRouter } from "./AppRouter"
-import { AuthProvider } from "./Context"
+import { AuthProvider, ProjectProvider } from "./Context"
 
 
 const AppHookContainer = () => {
   return (
     <div className="gradient-background">
       <AuthProvider>
-        <AppRouter>
-          <App />
-        </ AppRouter>
+        <ProjectProvider>
+          <AppRouter>
+            <App />
+          </ AppRouter>
+        </ProjectProvider>
       </AuthProvider >
 
-    </div>
+    </div >
   )
 }
 export default AppHookContainer;
