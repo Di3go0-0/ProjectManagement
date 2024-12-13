@@ -6,20 +6,12 @@ interface Props {
   Project: IProject;
 }
 
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  tasksPerforming: number;
-  tasksPending: number;
-}
+export const ProjectCard = ({ Project }: Props) => {
 
-export const ProjectCard = ({ title, description, tasksPerforming, tasksPending }: ProjectCardProps) => {
-
-  // const title = Project.title;
-  // const description = Project.description;
-  // const tasksPerforming = () => {
-  //   return Project.tasks.filter(task => task.done === 'false').length;
-  // }
+  const title = Project.title;
+  const description = Project.description;
+  const tasksPerforming = Project.tasks.filter(task => task.done === true).length;
+  const tasksPending = Project.tasks.filter(task => task.done === false).length;
 
   return (
     <div className="project-card">
@@ -34,9 +26,15 @@ export const ProjectCard = ({ title, description, tasksPerforming, tasksPending 
         <p className="description">{description}</p>
         <div className="task-status">
           {tasksPending === 0 ? (
-            <div className="status-item complete">
-              <span>Project Completed</span>
-            </div>
+            tasksPerforming === 0 ? (
+              <div className="status-item withoutTask">
+                <span>Project without Task</span>
+              </div>
+            ) : (
+              <div className="status-item complete">
+                <span>Project Completed</span>
+              </div>
+            )
           ) : (
             <>
               <div className="status-item performing">

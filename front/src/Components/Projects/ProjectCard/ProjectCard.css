@@ -1,6 +1,7 @@
 .project-card {
   background: #242424;
   border-radius: 8px;
+  min-width: 400px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
 }
@@ -71,6 +72,14 @@
   padding: 4px 12px;
   border-radius: 4px;
 }
+
+.status-item.withoutTask {
+  background: #767676;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
 
 .status-dot {
   width: 8px;
