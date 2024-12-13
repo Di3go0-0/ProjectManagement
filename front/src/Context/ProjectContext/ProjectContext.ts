@@ -1,10 +1,11 @@
 import { createContext, useContext } from "react";
-import { IProject } from "../../Interfaces";
+import { ICreateProject, IProject } from "../../Interfaces";
 
 
 interface ProjectContextType {
   projects: IProject[];
   GetProjects: () => void;
+  CreateProject: (project: ICreateProject) => Promise<boolean>;
 }
 
 export const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
