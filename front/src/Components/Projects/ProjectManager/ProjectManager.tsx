@@ -1,3 +1,7 @@
+import { useModal, useProject } from '../../../Context';
+import { ICreateProject } from '../../../Interfaces';
+import { Modal } from '../../Modal';
+import { CreateProjectForm } from '../CreateProject/CreateProjectForm';
 import './ProjectManager.css';
 
 interface Props {
@@ -8,13 +12,25 @@ interface Props {
 }
 
 export const ProjectManager = ({ setFilter, filter, setSearchQuery, searchQuery }: Props) => {
+  const { state, setState } = useModal();
+  const { CreateProject } = useProject();
+  const HandleCreateProject = () => {
+    setState(true);
+  }
+
+
   return (
     <>
+      {state && (
+        <Modal>
+          <CreateProjectForm CreateProject={CreateProject} />
+        </Modal>
+      )}
       <header className="header">
         <div className="header-top">
           <h1>Project Manager</h1>
           <div className="header-actions">
-            <button className="new-project-btn">New Project</button>
+            <button className="new-project-btn" onClick={HandleCreateProject}>New Project</button>
           </div>
         </div>
         <nav className="header-nav">
