@@ -7,3 +7,8 @@ export interface IProject {
   userId: number;
   tasks: ITask[]
 }
+
+export interface ICreateProject {
+  title: string;
+  description: string;
+}
