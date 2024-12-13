@@ -1,5 +1,15 @@
-.navbar {
+.nav-div {
+  width: 100%;
+  height: 85px;
+  background-color: transparent;
   position: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar {
   top: 0;
   width: 80%;
   z-index: 50;

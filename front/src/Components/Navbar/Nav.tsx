@@ -7,18 +7,20 @@ export const Navbar: React.FC = () => {
 
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-content">
-          <div className="navbar-user">
-            {user?.name}
+    <div className='nav-div'>
+      <nav className="navbar">
+        <div className="navbar-container">
+          <div className="navbar-content">
+            <div className="navbar-user">
+              {user?.name}
+            </div>
+            <button className="logout-button" onClick={Logout}>
+              Logout
+            </button>
           </div>
-          <button className="logout-button" onClick={Logout}>
-            Logout
-          </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 
