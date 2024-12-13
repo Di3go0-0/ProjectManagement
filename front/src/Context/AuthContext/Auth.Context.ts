@@ -6,7 +6,7 @@ interface AuthContextType {
   SingIn: (user: ILogin) => void;
   SignUp: (user: IRegister) => void;
   Logout: () => void;
-  isRegistered: boolean;
+  isLoading: boolean;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   user: IUser | null;
   errors: IAuthErrors;
