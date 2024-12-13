@@ -11,8 +11,6 @@ interface Props {
   serverErrors: IAuthErrors;
 }
 
-
-
 export const LoginForm = ({ handleSingIn, serverErrors }: Props) => {
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
