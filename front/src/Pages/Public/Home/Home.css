@@ -7,12 +7,19 @@
   box-sizing: border-box;
 }
 
+.home-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+
 /* Estilo del grid donde renderizas projects */
 .projects-grid {
   padding: 24px;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 24px;
-  overflow-x: hidden;
   box-sizing: border-box;
 }

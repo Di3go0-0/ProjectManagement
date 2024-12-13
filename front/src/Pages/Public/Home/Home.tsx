@@ -35,11 +35,13 @@ export const Home = () => {
           setSearchQuery={setSearchQuery}
           searchQuery={searchQuery}
         />
-        <main className="projects-grid">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} Project={project} />
-          ))}
-        </main>
+        <div className='home-body'>
+          <main className="projects-grid">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} Project={project} />
+            ))}
+          </main>
+        </div>
       </div>
     </>
   );
