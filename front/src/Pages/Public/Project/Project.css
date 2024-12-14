@@ -1,0 +1,6 @@
+.project-body {
+  min-height: calc(100vh - 4rem);
+  background: #4c4c4c;
+  display: flex;
+  flex-direction: column;
+}

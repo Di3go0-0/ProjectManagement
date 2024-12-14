@@ -3,12 +3,6 @@ import { ProjectForm } from '../../CustomForms';
 import { Modal } from '../../Modal';
 import './ProjectManager.css';
 
-interface Props {
-  setFilter: (filter: "all" | "active" | "complete") => void;
-  filter: "all" | "active" | "complete";
-  setSearchQuery: (query: string) => void;
-  searchQuery: string;
-}
 
 export const ProjectManager = () => {
   const { setFilter, filter, setSearchQuery, searchQuery } = useProject()

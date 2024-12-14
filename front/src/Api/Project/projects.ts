@@ -7,6 +7,11 @@ export const GetProjectsRequest = async () => {
   return response;
 }
 
+export const GetProjectRequest = async (id: string) => {
+  const response = await axios.get(`/project/${id}`);
+  return response;
+}
+
 export const CreateProjectRequest = async (project: ICreateProject) => {
   const response = await axios.post('/project', project);
   return response;

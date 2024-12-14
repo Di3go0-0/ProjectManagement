@@ -11,7 +11,8 @@ export const Navbar: React.FC = () => {
       <div className="navbar-container">
         <div className="navbar-content">
           <div className="navbar-user">
-            {user?.name}
+            <h1>Wellcome </h1>
+            <h1>{" " + user?.name}</h1>
           </div>
           <button className="logout-button" onClick={Logout}>
             Logout

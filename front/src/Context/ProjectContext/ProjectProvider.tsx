@@ -6,8 +6,10 @@ import {
   GetProjectsRequest,
   CreateProjectRequest,
   DeleteProjectRequest,
-  EditProjectRequest
+  EditProjectRequest,
+  GetProjectRequest
 } from "../../Api";
+import { set } from "react-hook-form";
 
 interface Props {
   children: ReactNode;
@@ -15,6 +17,7 @@ interface Props {
 
 export const ProjectProvider = ({ children }: Props) => {
   const [projects, setProjects] = useState<IProject[]>([]);
+  const [project, setProject] = useState<IProject | null>(null);
   const [filter, setFilter] = useState<"all" | "active" | "complete">("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -27,6 +30,24 @@ export const ProjectProvider = ({ children }: Props) => {
       console.log(e)
     }
   }
+  const GetProject = async (id: string): Promise<IProject | null> => {
+    try {
+      const res = await GetProjectRequest(id);
+      const project = res.data;
+      setProject(project);
+      // console.log(project)
+      return project;
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log("error Getting Project")
+        setProject(null);
+        return null;
+      }
+      setProject(null);
+      return null;
+    }
+  }
+
 
   const CreateProject = async (data: Partial<ProjectProps>): Promise<boolean> => {
     if (!data.project) return false;
@@ -79,7 +100,7 @@ export const ProjectProvider = ({ children }: Props) => {
 
   const FilteredProjects = (): IProject[] => {
     return projects.filter((project) => {
-      const titleMatches = project.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const titleMatches = project.title.toLowerCase().includes(searchQuery.trim().toLowerCase());
 
       const tasksPerforming = project.tasks.filter(task => task.done === true).length;
       const tasksPending = project.tasks.filter(task => task.done === false).length;
@@ -93,9 +114,11 @@ export const ProjectProvider = ({ children }: Props) => {
   return (
     <ProjectContext.Provider value={{
       projects,
+      project,
       filter, setFilter,
       searchQuery, setSearchQuery,
       GetProjects,
+      GetProject,
       EditProject,
       CreateProject,
       DeleteProject,

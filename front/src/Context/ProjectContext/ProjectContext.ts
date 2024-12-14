@@ -4,11 +4,13 @@ import { ProjectProps, IProject } from "../../Interfaces";
 
 interface ProjectContextType {
   projects: IProject[];
+  project: IProject | null;
   filter: "all" | "active" | "complete";
   setFilter: (filter: "all" | "active" | "complete") => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   GetProjects: () => void;
+  GetProject: (id: string) => Promise<IProject | null>;
   CreateProject: (data: Partial<ProjectProps>) => Promise<boolean>;
   DeleteProject: (id: string) => Promise<boolean>;
   EditProject: (data: Partial<ProjectProps>) => Promise<boolean>;
