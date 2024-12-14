@@ -16,12 +16,14 @@ export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [errors, setErrors] = useState<IAuthErrors>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const SignUp = async (user: IRegister) => {
     try {
       const res = await RegisterRequest(user);
       const userResponse: IUser = res.data.data;
       setUser(userResponse);
+      setIsRegistered(true);
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response && Array.isArray(e.response.data)) {
@@ -132,9 +134,30 @@ export const AuthProvider = ({ children }: Props) => {
     // console.log(errors);
   }, [errors])
 
+  useEffect(() => {
+    if (isRegistered) {
+      const timer = setTimeout(() => {
+        setIsRegistered(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  },
+    [isRegistered]
+  )
+
 
   return (
-    <AuthContext.Provider value={{ setIsAuthenticated, isAuthenticated, isLoading, SingIn, SignUp, Logout, user, errors }}>
+    <AuthContext.Provider value={{
+      setIsAuthenticated,
+      isAuthenticated,
+      isLoading,
+      isRegistered,
+      SingIn,
+      SignUp,
+      Logout,
+      user,
+      errors
+    }}>
       {children}
     </AuthContext.Provider>
   )

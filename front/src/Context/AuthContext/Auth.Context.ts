@@ -10,6 +10,7 @@ interface AuthContextType {
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   user: IUser | null;
   errors: IAuthErrors;
+  isRegistered: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
