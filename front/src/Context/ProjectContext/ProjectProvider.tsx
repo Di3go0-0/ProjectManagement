@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { ICreateProject, IProject } from "../../Interfaces";
 import { ProjectContext } from "./ProjectContext";
 import { AxiosError } from "axios";
-import { GetProjectsRequest, CreateProjectRequest } from "../../Api";
+import { GetProjectsRequest, CreateProjectRequest, DeleteProjectRequest } from "../../Api";
 
 interface Props {
   children: ReactNode;
@@ -37,9 +37,24 @@ export const ProjectProvider = ({ children }: Props) => {
     }
   }
 
+  const DeleteProject = async (id: string): Promise<boolean> => {
+    try {
+      const res = await DeleteProjectRequest(id);
+      console.log(res.data);
+      return true
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log("error Deleting Project")
+        return false;
+      }
+      console.log("Unexpected error", e);
+      return false;
+    }
+  }
+
 
   return (
-    <ProjectContext.Provider value={{ projects, GetProjects, CreateProject }}>
+    <ProjectContext.Provider value={{ projects, GetProjects, CreateProject, DeleteProject }}>
       {children}
     </ProjectContext.Provider>
   )

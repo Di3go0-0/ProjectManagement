@@ -11,3 +11,8 @@ export const CreateProjectRequest = async (project: ICreateProject) => {
   const response = await axios.post('/project', project);
   return response;
 }
+
+export const DeleteProjectRequest = async (id: string) => {
+  const response = await axios.delete(`/project/${id}`);
+  return response;
+}

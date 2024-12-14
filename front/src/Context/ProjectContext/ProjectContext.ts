@@ -6,6 +6,7 @@ interface ProjectContextType {
   projects: IProject[];
   GetProjects: () => void;
   CreateProject: (project: ICreateProject) => Promise<boolean>;
+  DeleteProject: (id: string) => Promise<boolean>;
 }
 
 export const ProjectContext = createContext<ProjectContextType | undefined>(undefined);

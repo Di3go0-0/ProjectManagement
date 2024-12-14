@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CreateProjectForm = ({ CreateProject }: Props) => {
-  const { setState } = useModal();
+  const { closeModal: CloseModal } = useModal();
   const { control, handleSubmit, formState: { errors } } = useForm<CreateProjectValues>({
     resolver: zodResolver(CreateProjectSchema),
     mode: "onBlur",
@@ -20,10 +20,12 @@ export const CreateProjectForm = ({ CreateProject }: Props) => {
     },
   })
 
+
+
   const onSubmit: SubmitHandler<CreateProjectValues> = async (data) => {
     const res = await CreateProject(data);
     if (res) {
-      setState(false);
+      CloseModal();
     }
   }
   return (
@@ -48,6 +50,9 @@ export const CreateProjectForm = ({ CreateProject }: Props) => {
         <div className="Buttons">
           <button type="submit" className="Button-submit">
             Create Project
+          </button>
+          <button type="button" onClick={CloseModal} className="Button-submit">
+            Close
           </button>
         </div>
       </form>

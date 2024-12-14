@@ -1,5 +1,4 @@
 import { useModal, useProject } from '../../../Context';
-import { ICreateProject } from '../../../Interfaces';
 import { Modal } from '../../Modal';
 import { CreateProjectForm } from '../CreateProject/CreateProjectForm';
 import './ProjectManager.css';
@@ -12,20 +11,20 @@ interface Props {
 }
 
 export const ProjectManager = ({ setFilter, filter, setSearchQuery, searchQuery }: Props) => {
-  const { state, setState } = useModal();
+  const { openModal } = useModal();
   const { CreateProject } = useProject();
-  const HandleCreateProject = () => {
-    setState(true);
-  }
 
+  const HandleCreateProject = () => {
+    openModal('CreateProjectForm');
+  }
 
   return (
     <>
-      {state && (
-        <Modal>
-          <CreateProjectForm CreateProject={CreateProject} />
-        </Modal>
-      )}
+      {/* {state && ( */}
+      <Modal modalId='CreateProjectForm'>
+        <CreateProjectForm CreateProject={CreateProject} />
+      </Modal>
+      {/* )} */}
       <header className="header">
         <div className="header-top">
           <h1>Project Manager</h1>
