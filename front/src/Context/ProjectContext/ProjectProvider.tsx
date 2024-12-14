@@ -1,8 +1,8 @@
 import { ReactNode, useState } from "react";
-import { ICreateProject, IProject } from "../../Interfaces";
+import { ProjectProps, ICreateProject, IProject, IUpdateProject } from "../../Interfaces";
 import { ProjectContext } from "./ProjectContext";
 import { AxiosError } from "axios";
-import { GetProjectsRequest, CreateProjectRequest, DeleteProjectRequest } from "../../Api";
+import { GetProjectsRequest, CreateProjectRequest, DeleteProjectRequest, EditProjectRequest } from "../../Api";
 
 interface Props {
   children: ReactNode;
@@ -21,10 +21,11 @@ export const ProjectProvider = ({ children }: Props) => {
     }
   }
 
-  const CreateProject = async (project: ICreateProject): Promise<boolean> => {
-    console.log(project);
+  const CreateProject = async (data: Partial<ProjectProps>): Promise<boolean> => {
+    if (!data.project) return false;
+    // console.log(data.project);
     try {
-      const res = await CreateProjectRequest(project);
+      const res = await CreateProjectRequest(data.project);
       console.log(res.data);
       return true;
     } catch (e) {
@@ -35,6 +36,27 @@ export const ProjectProvider = ({ children }: Props) => {
       console.log("Unexpected error", e);
       return false;
     }
+  }
+
+  const EditProject = async (data: Partial<ProjectProps>): Promise<boolean> => {
+    if (!data.project || !data.id) return false;
+    try {
+      const res = await EditProjectRequest(data.id, data.project);
+      console.log(res.data);
+      return true;
+
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log("error Editing Project")
+        return false;
+      }
+      console.log("Unexpected error", e);
+      return false;
+    }
+
+    console.log(data.project);
+    console.log(data.id);
+    return true;
   }
 
   const DeleteProject = async (id: string): Promise<boolean> => {
@@ -54,7 +76,7 @@ export const ProjectProvider = ({ children }: Props) => {
 
 
   return (
-    <ProjectContext.Provider value={{ projects, GetProjects, CreateProject, DeleteProject }}>
+    <ProjectContext.Provider value={{ projects, GetProjects, EditProject, CreateProject, DeleteProject }}>
       {children}
     </ProjectContext.Provider>
   )
