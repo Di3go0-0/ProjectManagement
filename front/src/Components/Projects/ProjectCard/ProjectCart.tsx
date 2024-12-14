@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useModal, useProject } from '../../../Context';
 import { Modal } from '../../Modal';
 import { ConfirmDelete } from '../ConfirmDelete/ConfirmDelete';
+import { ProjectForm } from '../../CustomForms';
 
 interface Props {
   Project: IProject;
@@ -13,7 +14,7 @@ interface Props {
 export const ProjectCard = ({ Project }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { openModal } = useModal();
-  const { DeleteProject } = useProject();
+  const { DeleteProject, EditProject } = useProject();
 
   const title = Project.title;
   const id = Project.id.toString();
@@ -25,23 +26,33 @@ export const ProjectCard = ({ Project }: Props) => {
     setIsMenuOpen(!isMenuOpen);
   }
 
-  const modalId = `modalConfirmDeleteProject${id}`;
+  const modalDeleteId = `modalConfirmDeleteProject${id}`;
+  const modalEditId = `modalEditProject${id}`;
+
   const handleDelete = () => {
-    openModal(modalId);
+    openModal(modalDeleteId);
+    setIsMenuOpen(false);
+  }
+
+  const handleEditProject = () => {
+    openModal(modalEditId);
+    setIsMenuOpen(false);
   }
 
   const messageDelete = `Are you sure you want to delete this project "${title}"?`
   return (
     <>
-      {/* {state && ( */}
-      <Modal modalId={modalId}>
+      <Modal modalId={modalDeleteId}>
         <ConfirmDelete
           ConfirmDelete={DeleteProject}
           message={messageDelete}
           id={id}
         />
       </Modal>
-      {/* )} */}
+      <Modal modalId={modalEditId}>
+        <ProjectForm FunctionProject={EditProject} edit={true} project={Project} />
+      </Modal>
+
       <div className="project-card">
         <div className="card-header">
           <h2>{title}</h2>
@@ -51,7 +62,7 @@ export const ProjectCard = ({ Project }: Props) => {
             </button>
             {isMenuOpen && (
               <div className="settings-menu">
-                <button className="menu-item edit">Edit</button>
+                <button className="menu-item edit" onClick={handleEditProject}>Edit</button>
                 <button className="menu-item delete" onClick={handleDelete}>Delete</button>
                 {/* <button className="menu-item delete" onClick={() => console.log(id)}>Delete</button> */}
               </div>

@@ -1,6 +1,6 @@
 import { useModal, useProject } from '../../../Context';
+import { ProjectForm } from '../../CustomForms';
 import { Modal } from '../../Modal';
-import { CreateProjectForm } from '../CreateProject/CreateProjectForm';
 import './ProjectManager.css';
 
 interface Props {
@@ -22,7 +22,7 @@ export const ProjectManager = ({ setFilter, filter, setSearchQuery, searchQuery 
     <>
       {/* {state && ( */}
       <Modal modalId='CreateProjectForm'>
-        <CreateProjectForm CreateProject={CreateProject} />
+        <ProjectForm FunctionProject={CreateProject} edit={false} />
       </Modal>
       {/* )} */}
       <header className="header">
