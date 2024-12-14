@@ -1,4 +1,4 @@
-import { ICreateProject } from "../../Interfaces/Project.ts";
+import { ICreateProject, IUpdateProject } from "../../Interfaces";
 import axios from "../axios.ts";
 
 
@@ -14,5 +14,10 @@ export const CreateProjectRequest = async (project: ICreateProject) => {
 
 export const DeleteProjectRequest = async (id: string) => {
   const response = await axios.delete(`/project/${id}`);
+  return response;
+}
+
+export const EditProjectRequest = async (id: string, project: IUpdateProject) => {
+  const response = await axios.put(`/project/${id}`, project);
   return response;
 }
