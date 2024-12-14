@@ -4,20 +4,17 @@ import { useModal } from "../../../Context";
 import './Modal.css'
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
+  modalId: string;
 }
 
-export const Modal = ({ children }: Props) => {
+export const Modal = ({ children, modalId }: Props) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const { state, setState } = useModal();
+  const { activeModal, closeModal } = useModal();
 
   const modalRoot = document.getElementById("modal")
 
-  const closeModal = () => {
-    setState(false);
-  }
-
-  if (!state || !modalRoot) return null;
+  if (activeModal !== modalId || !modalRoot) return null;
 
   return createPortal(
     <>
@@ -26,7 +23,6 @@ export const Modal = ({ children }: Props) => {
           onClick={(e) => e.stopPropagation()}
         >
           {children}
-          <button onClick={closeModal} className="close-button">Close</button>
         </div>
       </div>
     </>

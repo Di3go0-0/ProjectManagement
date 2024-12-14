@@ -6,11 +6,13 @@ interface Props {
 }
 
 export const ModalProvider = ({ children }: Props) => {
-  const [state, setState] = useState(false)
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
+  const openModal = (modalId: string) => setActiveModal(modalId);
+  const closeModal = () => setActiveModal(null);
 
   return (
-    <ModalContext.Provider value={{ state, setState }}>
+    <ModalContext.Provider value={{ activeModal, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   )

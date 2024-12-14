@@ -1,13 +1,14 @@
 import { createContext, useContext } from "react";
 
 
-export const ModalContext = createContext<{
-  state: boolean;
-  setState: React.Dispatch<React.SetStateAction<boolean>>;
-}>({
-  state: false,
-  setState: () => null
-})
+interface ModalContextType {
+  activeModal: string | null;
+  openModal: (modalId: string) => void;
+  closeModal: () => void;
+}
+
+export const ModalContext = createContext<ModalContextType | undefined>(undefined);
+
 
 export const useModal = () => {
   const context = useContext(ModalContext)
