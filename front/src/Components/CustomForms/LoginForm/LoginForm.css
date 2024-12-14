@@ -10,7 +10,7 @@
 form {
   display: flex;
   flex-direction: column;
-  background: transparent;
+  /* background: transparent; */
 }
 
 .Form h1 {
