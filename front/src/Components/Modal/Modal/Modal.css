@@ -24,21 +24,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  /* background-color: rgba(0, 0, 0, 0.55); */
-  /* Fondo blanco */
-  /* padding: 20px; */
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  /* Sombra sutil */
   width: 100%;
-  /* Ocupa el 100% de su contenedor padre */
   max-width: 500px;
-  /* Máximo ancho */
   position: relative;
-  /* Para posicionar el botón de cierre */
   z-index: 1001;
-  /* Asegura que esté encima del overlay */
 }
 
 /* Botón de cierre */
