@@ -10,7 +10,8 @@ interface Props {
   searchQuery: string;
 }
 
-export const ProjectManager = ({ setFilter, filter, setSearchQuery, searchQuery }: Props) => {
+export const ProjectManager = () => {
+  const { setFilter, filter, setSearchQuery, searchQuery } = useProject()
   const { openModal } = useModal();
   const { CreateProject } = useProject();
 

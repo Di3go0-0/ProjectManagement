@@ -1,8 +1,13 @@
 import { ReactNode, useState } from "react";
-import { ProjectProps, ICreateProject, IProject, IUpdateProject } from "../../Interfaces";
+import { ProjectProps, IProject } from "../../Interfaces";
 import { ProjectContext } from "./ProjectContext";
 import { AxiosError } from "axios";
-import { GetProjectsRequest, CreateProjectRequest, DeleteProjectRequest, EditProjectRequest } from "../../Api";
+import {
+  GetProjectsRequest,
+  CreateProjectRequest,
+  DeleteProjectRequest,
+  EditProjectRequest
+} from "../../Api";
 
 interface Props {
   children: ReactNode;
@@ -10,6 +15,8 @@ interface Props {
 
 export const ProjectProvider = ({ children }: Props) => {
   const [projects, setProjects] = useState<IProject[]>([]);
+  const [filter, setFilter] = useState<"all" | "active" | "complete">("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const GetProjects = async () => {
     try {
@@ -53,10 +60,6 @@ export const ProjectProvider = ({ children }: Props) => {
       console.log("Unexpected error", e);
       return false;
     }
-
-    console.log(data.project);
-    console.log(data.id);
-    return true;
   }
 
   const DeleteProject = async (id: string): Promise<boolean> => {
@@ -74,9 +77,30 @@ export const ProjectProvider = ({ children }: Props) => {
     }
   }
 
+  const FilteredProjects = (): IProject[] => {
+    return projects.filter((project) => {
+      const titleMatches = project.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const tasksPerforming = project.tasks.filter(task => task.done === true).length;
+      const tasksPending = project.tasks.filter(task => task.done === false).length;
+
+      if (filter === "all") return titleMatches;
+      if (filter === "active") return titleMatches && (tasksPending > 0 || project.tasks.length === 0);
+      if (filter === "complete") return titleMatches && tasksPending === 0 && tasksPerforming > 0;
+    });
+  }
 
   return (
-    <ProjectContext.Provider value={{ projects, GetProjects, EditProject, CreateProject, DeleteProject }}>
+    <ProjectContext.Provider value={{
+      projects,
+      filter, setFilter,
+      searchQuery, setSearchQuery,
+      GetProjects,
+      EditProject,
+      CreateProject,
+      DeleteProject,
+      FilteredProjects,
+    }}>
       {children}
     </ProjectContext.Provider>
   )

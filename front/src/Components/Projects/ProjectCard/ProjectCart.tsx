@@ -6,6 +6,7 @@ import { useModal, useProject } from '../../../Context';
 import { Modal } from '../../Modal';
 import { ConfirmDelete } from '../ConfirmDelete/ConfirmDelete';
 import { ProjectForm } from '../../CustomForms';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   Project: IProject;
@@ -15,6 +16,8 @@ export const ProjectCard = ({ Project }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { openModal } = useModal();
   const { DeleteProject, EditProject } = useProject();
+
+  const navigate = useNavigate();
 
   const title = Project.title;
   const id = Project.id.toString();
@@ -39,6 +42,11 @@ export const ProjectCard = ({ Project }: Props) => {
     setIsMenuOpen(false);
   }
 
+  const handleProjectPage = () => {
+    navigate(`/private/project/${id}`);
+  }
+
+
   const messageDelete = `Are you sure you want to delete this project "${title}"?`
   return (
     <>
@@ -53,10 +61,10 @@ export const ProjectCard = ({ Project }: Props) => {
         <ProjectForm FunctionProject={EditProject} edit={true} project={Project} />
       </Modal>
 
-      <div className="project-card">
+      <div className="project-card" onClick={handleProjectPage}>
         <div className="card-header">
           <h2>{title}</h2>
-          <div className='settings-menu-container'>
+          <div className='settings-menu-container' onClick={(e) => e.stopPropagation()}>
             <button className="settings-btn" onClick={toggleMenu}>
               <Settings size={20} />
             </button>
@@ -95,7 +103,7 @@ export const ProjectCard = ({ Project }: Props) => {
             )}
           </div>
         </div>
-      </div>
+      </div >
     </>
   )
 }

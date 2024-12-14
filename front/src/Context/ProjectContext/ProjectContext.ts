@@ -1,13 +1,18 @@
 import { createContext, useContext } from "react";
-import { ProjectProps, ICreateProject, IProject } from "../../Interfaces";
+import { ProjectProps, IProject } from "../../Interfaces";
 
 
 interface ProjectContextType {
   projects: IProject[];
+  filter: "all" | "active" | "complete";
+  setFilter: (filter: "all" | "active" | "complete") => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
   GetProjects: () => void;
   CreateProject: (data: Partial<ProjectProps>) => Promise<boolean>;
   DeleteProject: (id: string) => Promise<boolean>;
   EditProject: (data: Partial<ProjectProps>) => Promise<boolean>;
+  FilteredProjects: () => IProject[];
 }
 
 export const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
