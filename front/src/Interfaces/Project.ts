@@ -12,3 +12,13 @@ export interface ICreateProject {
   title: string;
   description: string;
 }
+
+export interface IUpdateProject {
+  title: string;
+  description: string;
+}
+
+export interface ProjectProps {
+  id: string;
+  project: ICreateProject | IUpdateProject;
+}
