@@ -29,6 +29,51 @@
   }
 }
 
+.links-container {
+  display: flex;
+  align-items: center;
+  justify-content: safe;
+  width: 25vw;
+}
+
+.links-container .link {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.links-container .link::before,
+.links-container .link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  background-color: #a5a5a5;
+  transition: width 0.3s;
+}
+
+.links-container .link::before {
+  left: 50%;
+}
+
+.links-container .link::after {
+  right: 50%;
+}
+
+.links-container .link:hover::before,
+.links-container .link:hover::after {
+  width: 50%;
+}
+
+.links-container .link:hover {
+  color: #a5a5a5;
+
+}
+
 .logout-button {
   padding: 8px 16px;
   border: none;
