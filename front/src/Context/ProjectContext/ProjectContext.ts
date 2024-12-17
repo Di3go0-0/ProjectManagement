@@ -5,6 +5,7 @@ import { ProjectProps, IProject } from "../../Interfaces";
 interface ProjectContextType {
   projects: IProject[];
   project: IProject | null;
+  setProject: (project: IProject | null) => void;
   filter: "all" | "active" | "complete";
   setFilter: (filter: "all" | "active" | "complete") => void;
   searchQuery: string;
@@ -15,6 +16,9 @@ interface ProjectContextType {
   DeleteProject: (id: string) => Promise<boolean>;
   EditProject: (data: Partial<ProjectProps>) => Promise<boolean>;
   FilteredProjects: () => IProject[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  ProjectExists: (id: number) => Promise<boolean>;
 }
 
 export const ProjectContext = createContext<ProjectContextType | undefined>(undefined);

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { ProjectProps, IProject } from "../../Interfaces";
 import { ProjectContext } from "./ProjectContext";
 import { AxiosError } from "axios";
@@ -9,7 +9,6 @@ import {
   EditProjectRequest,
   GetProjectRequest
 } from "../../Api";
-import { set } from "react-hook-form";
 
 interface Props {
   children: ReactNode;
@@ -20,34 +19,40 @@ export const ProjectProvider = ({ children }: Props) => {
   const [project, setProject] = useState<IProject | null>(null);
   const [filter, setFilter] = useState<"all" | "active" | "complete">("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const GetProjects = async () => {
+  const GetProjects = useCallback(async () => {
     try {
-      const response = await GetProjectsRequest();
-      // console.log(response.data)
-      setProjects(response.data)
+      const res = await GetProjectsRequest();
+      setProjects(res.data);
     } catch (e) {
-      console.log(e)
+      if (e instanceof AxiosError) {
+        console.log("Error getting projects");
+      }
+      console.error("Unexpected error", e);
     }
-  }
+  }, []); // Sin dependencias
+
   const GetProject = async (id: string): Promise<IProject | null> => {
     try {
       const res = await GetProjectRequest(id);
       const project = res.data;
       setProject(project);
-      // console.log(project)
-      return project;
+      return project; // Devuelve el proyecto cargado
     } catch (e) {
-      if (e instanceof AxiosError) {
-        console.log("error Getting Project")
-        setProject(null);
-        return null;
-      }
-      setProject(null);
+      console.error("Error Getting Project:", e);
+      setProject(null); // Asegura que el estado sea null en caso de error
       return null;
     }
-  }
+  };
 
+  const ProjectExists = async (id: number): Promise<boolean> => {
+    setLoading(true);
+    await GetProjects();
+    const exists = projects.some((project) => project.id === id);
+    setLoading(false);
+    return exists;
+  }
 
   const CreateProject = async (data: Partial<ProjectProps>): Promise<boolean> => {
     if (!data.project) return false;
@@ -55,6 +60,7 @@ export const ProjectProvider = ({ children }: Props) => {
     try {
       const res = await CreateProjectRequest(data.project);
       console.log(res.data);
+      setProjects([...projects, res.data]);
       return true;
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -71,6 +77,7 @@ export const ProjectProvider = ({ children }: Props) => {
     try {
       const res = await EditProjectRequest(data.id, data.project);
       console.log(res.data);
+      setProjects(projects.map(project => project.id === Number(data.id) ? { ...project, ...data.project } : project));
       return true;
 
     } catch (e) {
@@ -87,6 +94,8 @@ export const ProjectProvider = ({ children }: Props) => {
     try {
       const res = await DeleteProjectRequest(id);
       console.log(res.data);
+      const idNumber = Number(id);
+      setProjects(projects.filter(project => project.id !== idNumber));
       return true
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -100,7 +109,7 @@ export const ProjectProvider = ({ children }: Props) => {
 
   const FilteredProjects = (): IProject[] => {
     return projects.filter((project) => {
-      const titleMatches = project.title.toLowerCase().includes(searchQuery.trim().toLowerCase());
+      const titleMatches = project.title?.toLowerCase().includes(searchQuery.trim().toLowerCase()) ?? false;
 
       const tasksPerforming = project.tasks.filter(task => task.done === true).length;
       const tasksPending = project.tasks.filter(task => task.done === false).length;
@@ -114,7 +123,7 @@ export const ProjectProvider = ({ children }: Props) => {
   return (
     <ProjectContext.Provider value={{
       projects,
-      project,
+      project, setProject,
       filter, setFilter,
       searchQuery, setSearchQuery,
       GetProjects,
@@ -123,6 +132,8 @@ export const ProjectProvider = ({ children }: Props) => {
       CreateProject,
       DeleteProject,
       FilteredProjects,
+      loading, setLoading,
+      ProjectExists,
     }}>
       {children}
     </ProjectContext.Provider>
