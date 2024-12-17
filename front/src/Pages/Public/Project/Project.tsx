@@ -1,33 +1,49 @@
 import { useNavigate, useParams } from "react-router-dom"
 import './Project.css'
-import { useProject } from "../../../Context";
-import { useEffect } from "react";
-
-
+import { useProject, useTask } from "../../../Context";
+import { useEffect, useMemo } from "react";
+import { TaskCard, TaskManager } from "../../../Components";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const { GetProject, project } = useProject();
+  const { projects } = useProject();
+  const { GetTasks, FilteredTasks } = useTask()
 
   const navigate = useNavigate();
 
+  const project = useMemo(() => {
+    return projects.find((project) => project.id === Number(id));
+  }, [projects, id]);
+
+  // Obtener las tareas solo si el ID del proyecto cambia
   useEffect(() => {
-    const idString = id as string;
-    GetProject(idString);
-
-    if (!project) {
-      navigate('/private/home');
+    if (project?.id) {
+      GetTasks(project.id);
     }
-  }, [id, navigate, project, GetProject]);
+  }, [project?.id, GetTasks]);
 
+  // Filtrar tareas
+  const tasks = FilteredTasks();
+
+  // Redirigir si el proyecto no existe
+  useEffect(() => {
+    if (!project) {
+      navigate("/private/home");
+    }
+  }, [project, navigate]);
 
   return (
     <div className="project-body" >
-      <h1>Page Project</h1>
-      <h2>Project ID: {id}</h2>
-      <h3>Project Name: {project?.title}</h3>
-      <h3>Project Description: {project?.description}</h3>
-
+      <TaskManager Project={project!} />
+      <div className='home-body'>
+        <main className="projects-grid">
+          {(
+            tasks.map((task) => (
+              <TaskCard key={task.id} Task={task} />
+            ))
+          )}
+        </main>
+      </div>
     </div>
   )
 }
