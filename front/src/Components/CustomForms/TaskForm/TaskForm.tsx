@@ -1,30 +1,31 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProjectProps, IProject, } from "../../../Interfaces";
-import { CreateProjectValues, ProjectSchema } from "../../../Models";
-import InputForm from "../../CustomInput/CustomInput";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useModal } from "../../../Context";
-import './ProjectForm.css'
-
+import { ITask, TaskProps } from "../../../Interfaces/Task";
+import { TaskSchema, TaskValues } from "../../../Models";
+import { SubmitHandler, useForm } from "react-hook-form";
+import InputForm from "../../CustomInput/CustomInput";
 
 
 interface Props {
-  FunctionProject: (data: Partial<ProjectProps>) => Promise<boolean>;
+  FuntionTask: (data: Partial<TaskProps>) => Promise<boolean>;
   edit: boolean;
-  project?: IProject;
+  projectId: number;
+  task?: ITask;
 }
 
-export const ProjectForm = ({ FunctionProject, edit, project }: Props) => {
-  const { closeModal: CloseModal } = useModal();
+
+export const TaskForm = ({ FuntionTask, edit, task, projectId }: Props) => {
+  const { closeModal } = useModal();
+
 
   let title = "", description = "";
   if (edit) {
-    title = project?.title || "";
-    description = project?.description || "";
+    title = task?.title || "";
+    description = task?.description || "";
   }
 
-  const { control, handleSubmit, formState: { errors } } = useForm<CreateProjectValues>({
-    resolver: zodResolver(ProjectSchema),
+  const { control, handleSubmit, formState: { errors } } = useForm<TaskValues>({
+    resolver: zodResolver(TaskSchema),
     mode: "onBlur",
     defaultValues: {
       title: title,
@@ -32,21 +33,23 @@ export const ProjectForm = ({ FunctionProject, edit, project }: Props) => {
     },
   })
 
+  const onSubmit: SubmitHandler<TaskValues> = async (data) => {
 
+    const Task = { ...data, projectId: projectId };
 
-  const onSubmit: SubmitHandler<CreateProjectValues> = async (data) => {
-    if (edit && project?.id) {
-      const res = await FunctionProject({ id: project.id.toString(), project: data });
+    if (edit && task?.id) {
+      const res = await FuntionTask({ id: task.id, task: Task });
       if (res) {
-        CloseModal();
+        closeModal();
       }
       return
     }
-    const res = await FunctionProject({ project: data });
+    const res = await FuntionTask({ task: Task });
     if (res) {
-      CloseModal();
+      closeModal();
     }
   }
+
   return (
     <div className="form-project">
       {edit ? <h1>Edit Project</h1> : <h1>Create Project</h1>}
@@ -70,12 +73,13 @@ export const ProjectForm = ({ FunctionProject, edit, project }: Props) => {
           <button type="submit" className="Button-submit">
             {edit ? "Edit Project" : "Create Project"}
           </button>
-          <button type="button" onClick={CloseModal} className="Button-submit">
+          <button type="button" onClick={closeModal} className="Button-submit">
             Close
           </button>
         </div>
       </form>
     </div>
+
   )
 
 }
