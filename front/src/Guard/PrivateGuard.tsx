@@ -11,3 +11,4 @@ export const PrivateGuard = () => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
+
