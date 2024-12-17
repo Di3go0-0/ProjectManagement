@@ -64,7 +64,7 @@ export const updateProject = async (req: Request, res: Response) => {
     if (!project) res.status(404).json({ message: "Project Not Fount" });
     res
       .status(201)
-      .json({ message: "Project Updated Succesfully", Data: project });
+      .json({ message: "Project Updated Succesfully", data: project });
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error" });
   }
