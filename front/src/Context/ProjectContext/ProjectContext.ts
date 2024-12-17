@@ -13,7 +13,7 @@ interface ProjectContextType {
   GetProjects: () => void;
   GetProject: (id: string) => Promise<IProject | null>;
   CreateProject: (data: Partial<ProjectProps>) => Promise<boolean>;
-  DeleteProject: (id: string) => Promise<boolean>;
+  DeleteProject: (id: number) => Promise<boolean>;
   EditProject: (data: Partial<ProjectProps>) => Promise<boolean>;
   FilteredProjects: () => IProject[];
   loading: boolean;

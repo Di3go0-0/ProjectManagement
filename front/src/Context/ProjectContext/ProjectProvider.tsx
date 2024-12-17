@@ -90,12 +90,11 @@ export const ProjectProvider = ({ children }: Props) => {
     }
   }
 
-  const DeleteProject = async (id: string): Promise<boolean> => {
+  const DeleteProject = async (id: number): Promise<boolean> => {
     try {
       const res = await DeleteProjectRequest(id);
       console.log(res.data);
-      const idNumber = Number(id);
-      setProjects(projects.filter(project => project.id !== idNumber));
+      setProjects(projects.filter(project => project.id !== id));
       return true
     } catch (e) {
       if (e instanceof AxiosError) {
