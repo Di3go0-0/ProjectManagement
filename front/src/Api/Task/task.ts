@@ -19,3 +19,8 @@ export const DeleteTaskRequest = async (id: number) => {
   const response = await axios.delete(`/task/${id}`);
   return response;
 }
+
+export const ToggleTaskRequest = async (id: number) => {
+  const response = await axios.patch(`/task/${id}`);
+  return response;
+}
