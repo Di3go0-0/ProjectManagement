@@ -14,7 +14,7 @@ interface Props {
 export const TaskCard = ({ Task }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { openModal } = useModal();
-  const { DeleteTask, EditTask } = useTask();
+  const { DeleteTask, EditTask, ToggleTask } = useTask();
 
 
   const toggleMenu = () => {
@@ -34,6 +34,10 @@ export const TaskCard = ({ Task }: Props) => {
     openModal(modalEditId);
     setIsMenuOpen(false);
   }
+  const handleToggleTask = () => {
+    ToggleTask(Task.id);
+  }
+
 
   const messageDelete = `Are you sure you want to delete this task "${Task.title}"?`
   return (
@@ -69,8 +73,9 @@ export const TaskCard = ({ Task }: Props) => {
         <div className="card-divider" />
         <div className="card-content">
           <p className="description">{Task.description}</p>
-          <div className="task-status">
-
+          <div className="btns">
+            <button className={`btn-handler ` + (Task.done ? 'done' : 'not-done')}
+              onClick={handleToggleTask} >{Task.done ? 'not-done' : 'done'}</button>
           </div>
         </div>
       </div >
