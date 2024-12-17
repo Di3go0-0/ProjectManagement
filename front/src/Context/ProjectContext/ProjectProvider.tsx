@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useState } from "react";
-import { ProjectProps, IProject } from "../../Interfaces";
+import { ProjectProps, IProject, ICreateProject } from "../../Interfaces";
 import { ProjectContext } from "./ProjectContext";
 import { AxiosError } from "axios";
 import {
@@ -58,9 +58,8 @@ export const ProjectProvider = ({ children }: Props) => {
     if (!data.project) return false;
     // console.log(data.project);
     try {
-      const res = await CreateProjectRequest(data.project);
-      console.log(res.data);
-      setProjects([...projects, res.data]);
+      const res = await CreateProjectRequest(data.project as ICreateProject);
+      setProjects([...projects, res.data.data]);
       return true;
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -77,7 +76,7 @@ export const ProjectProvider = ({ children }: Props) => {
     try {
       const res = await EditProjectRequest(data.id, data.project);
       console.log(res.data);
-      setProjects(projects.map(project => project.id === Number(data.id) ? { ...project, ...data.project } : project));
+      setProjects(projects.map(project => project.id === Number(data.id) ? { ...project, ...res.data.data } : project));
       return true;
 
     } catch (e) {
@@ -110,14 +109,15 @@ export const ProjectProvider = ({ children }: Props) => {
     return projects.filter((project) => {
       const titleMatches = project.title?.toLowerCase().includes(searchQuery.trim().toLowerCase()) ?? false;
 
-      const tasksPerforming = project.tasks.filter(task => task.done === true).length;
-      const tasksPending = project.tasks.filter(task => task.done === false).length;
+      const tasksPerforming = project.tasks?.filter(task => task.done === true).length ?? 0;
+      const tasksPending = project.tasks?.filter(task => task.done === false).length ?? 0;
 
       if (filter === "all") return titleMatches;
-      if (filter === "active") return titleMatches && (tasksPending > 0 || project.tasks.length === 0);
+      if (filter === "active") return titleMatches && (tasksPending > 0 || project.tasks?.length === 0);
       if (filter === "complete") return titleMatches && tasksPending === 0 && tasksPerforming > 0;
     });
   }
+
 
   return (
     <ProjectContext.Provider value={{

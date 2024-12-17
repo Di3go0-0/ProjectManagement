@@ -6,3 +6,6 @@ export * from './ProjectContext/ProjectProvider.tsx'
 
 export * from './ModalContext/ModalContext.ts'
 export * from './ModalContext/ModalProvider.tsx'
+
+export * from './TaskContext/TaskContext.ts'
+export * from './TaskContext/TaskProvider.tsx'
