@@ -4,9 +4,9 @@ import { IProject } from '../../../Interfaces';
 import { useState } from 'react';
 import { useModal, useProject } from '../../../Context';
 import { Modal } from '../../Modal';
-import { ConfirmDelete } from '../ConfirmDelete/ConfirmDelete';
 import { ProjectForm } from '../../CustomForms';
 import { useNavigate } from 'react-router-dom';
+import { ConfirmDelete } from '../../ConfirmDelete/ConfirmDelete';
 
 interface Props {
   Project: IProject;
@@ -20,7 +20,6 @@ export const ProjectCard = ({ Project }: Props) => {
   const navigate = useNavigate();
 
   const title = Project.title;
-  const id = Project.id.toString();
   const description = Project.description;
   const tasksPerforming = Project.tasks.filter(task => task.done === true).length;
   const tasksPending = Project.tasks.filter(task => task.done === false).length;
@@ -29,8 +28,8 @@ export const ProjectCard = ({ Project }: Props) => {
     setIsMenuOpen(!isMenuOpen);
   }
 
-  const modalDeleteId = `modalConfirmDeleteProject${id}`;
-  const modalEditId = `modalEditProject${id}`;
+  const modalDeleteId = `modalConfirmDeleteProject${Project.id}`;
+  const modalEditId = `modalEditProject${Project.id}`;
 
   const handleDelete = () => {
     openModal(modalDeleteId);
@@ -43,7 +42,7 @@ export const ProjectCard = ({ Project }: Props) => {
   }
 
   const handleProjectPage = () => {
-    navigate(`/private/project/${id}`);
+    navigate(`/private/project/${Project.id}`);
   }
 
 
@@ -54,7 +53,7 @@ export const ProjectCard = ({ Project }: Props) => {
         <ConfirmDelete
           ConfirmDelete={DeleteProject}
           message={messageDelete}
-          id={id}
+          id={Project.id}
         />
       </Modal>
       <Modal modalId={modalEditId}>
