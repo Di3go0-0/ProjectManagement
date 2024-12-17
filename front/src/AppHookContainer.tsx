@@ -1,6 +1,7 @@
 import App from "./App"
 import { AppRouter } from "./AppRouter"
 import { AuthProvider, ModalProvider, ProjectProvider } from "./Context"
+import { TaskProvider } from "./Context/TaskContext/TaskProvider"
 
 
 const AppHookContainer = () => {
@@ -9,9 +10,11 @@ const AppHookContainer = () => {
       <ModalProvider>
         <AuthProvider>
           <ProjectProvider>
-            <AppRouter>
-              <App />
-            </ AppRouter>
+            <TaskProvider>
+              <AppRouter>
+                <App />
+              </ AppRouter>
+            </TaskProvider>
           </ProjectProvider>
         </AuthProvider >
       </ModalProvider>
