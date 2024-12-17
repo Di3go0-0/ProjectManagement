@@ -1,12 +1,12 @@
-import { useModal } from "../../../Context";
+import { useModal } from '../../Context';
 import './ConfirmDelete.css';
 
 
 interface Props {
   // ConfirmDelete: (id: string) => Promise<boolean>;
-  ConfirmDelete: (id: string) => Promise<boolean>;
+  ConfirmDelete: (id: number) => Promise<boolean>;
   message: string;
-  id: string;
+  id: number;
 }
 
 export const ConfirmDelete = ({ ConfirmDelete, message, id }: Props) => {
