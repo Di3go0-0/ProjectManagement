@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useState } from "react";
 import { ICreateTask, ITask, IUpdateTask, TaskProps } from "../../Interfaces";
-import { CreateTaskRequest, DeleteTaskRequest, EditTaskRequest, GetTaskRequest } from "../../Api";
+import { CreateTaskRequest, DeleteTaskRequest, EditTaskRequest, GetTaskRequest, ToggleTaskRequest } from "../../Api";
 import { AxiosError } from "axios";
 import { TaskContext } from "./TaskContext";
 
@@ -49,7 +49,7 @@ export const TaskProvider = ({ children }: Props) => {
     if (!data.task || !data.id) return false;
     try {
       const res = await EditTaskRequest(data.id, data.task as IUpdateTask);
-      console.log(res.data);
+      console.log(res.data.data);
       const updatedTasks = tasks.map((task) => {
         if (task.id === data.id) {
           return res.data.data;
@@ -68,6 +68,29 @@ export const TaskProvider = ({ children }: Props) => {
     }
   }
 
+  const ToggleTask = async (id: number): Promise<boolean> => {
+    try {
+      const res = await ToggleTaskRequest(id);
+      console.log(res.data.data);
+      const updatedTasks = tasks.map((task) => {
+        if (task.id === id) {
+          return res.data.data;
+        }
+        return task;
+      });
+      setTasks(updatedTasks);
+
+      return true
+
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        console.log("error Deleting Project")
+        return false;
+      }
+      console.log("Unexpected error", e);
+      return false;
+    }
+  }
 
   const DeleteTask = async (id: number): Promise<boolean> => {
     try {
@@ -110,6 +133,7 @@ export const TaskProvider = ({ children }: Props) => {
       DeleteTask,
       CreateTask,
       EditTask,
+      ToggleTask,
     }}>
       {children}
     </TaskContext.Provider>

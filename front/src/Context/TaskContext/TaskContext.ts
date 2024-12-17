@@ -13,6 +13,7 @@ interface TaskContextType {
   DeleteTask: (id: number) => Promise<boolean>;
   CreateTask: (data: Partial<TaskProps>) => Promise<boolean>;
   EditTask: (data: Partial<TaskProps>) => Promise<boolean>;
+  ToggleTask: (id: number) => Promise<boolean>;
 }
 
 export const TaskContext = createContext<TaskContextType | undefined>(undefined);
