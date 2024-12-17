@@ -17,7 +17,7 @@ export const CreateProjectRequest = async (project: ICreateProject) => {
   return response;
 }
 
-export const DeleteProjectRequest = async (id: string) => {
+export const DeleteProjectRequest = async (id: number) => {
   const response = await axios.delete(`/project/${id}`);
   return response;
 }
