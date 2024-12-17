@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 
-export const ProjectSchema = z
+export const TaskSchema = z
   .object({
     title: z.string()
       .min(1, "Title is Required"),
@@ -9,4 +9,4 @@ export const ProjectSchema = z
       .min(1, "Description is Required"),
   });
 
-export type CreateProjectValues = z.infer<typeof ProjectSchema>;
+export type TaskValues = z.infer<typeof TaskSchema>;
