@@ -138,3 +138,17 @@ export const projectExists = async (projectId: number): Promise<boolean> => {
   if (!project) return false;
   return true;
 };
+export const isUserProjectOwner = async (projectId: number, cookie: string): Promise<boolean> => {
+  const userId = await getUserId(cookie);
+  if (!userId) return false;
+  const project = await prisma.project.findUnique({
+    where: {
+      id: projectId,
+      userId: userId,
+    },
+  });
+  if (!project) return false;
+  return true;
+};
+
+
