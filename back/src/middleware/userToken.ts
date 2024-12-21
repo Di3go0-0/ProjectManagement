@@ -1,6 +1,7 @@
 import type { NextFunction, Response, Request } from "express";
 import { verifyToken } from "../helpers";
 import { PrismaClient } from "@prisma/client";
+import { obtainUserByIdRepo } from "../repository";
 
 const prisma = new PrismaClient();
 
@@ -18,10 +19,7 @@ export const userToken = async (req: Request, res: Response, next: NextFunction,
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: token.id },
-    });
-
+    const user = await obtainUserByIdRepo(token.id);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
