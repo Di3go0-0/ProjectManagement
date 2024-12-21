@@ -6,6 +6,7 @@ import { projectSchema, taskSchema } from "./schemas"; // Asegúrate de que la r
 import { registerSchema, loginSchema } from "./schemas";
 import {
   authswaggerDocs,
+  collaboratorSwaggerDocs,
   projectSwaggerDocs,
   taskSwaggerDocs,
 } from "./swaggerDots";
@@ -41,11 +42,13 @@ const options = {
       ...authswaggerDocs.paths,
       ...projectSwaggerDocs.paths,
       ...taskSwaggerDocs.paths,
+      ...collaboratorSwaggerDocs.paths,
     },
     tags: [
       ...authswaggerDocs.tags,
       ...projectSwaggerDocs.tags,
       ...taskSwaggerDocs.tags,
+      ...collaboratorSwaggerDocs.tags,
     ],
   },
   apis: ["./src/routes/*.ts", "./src/controllers/*.ts"], // Asegúrate de que las rutas coincidan

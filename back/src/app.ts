@@ -1,5 +1,5 @@
 import express from "express";
-import { taskRoutes, AuthRoutes, projectRoutes } from "./routes";
+import { taskRoutes, AuthRoutes, projectRoutes, collaboratorRoutes } from "./routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -19,5 +19,6 @@ app.use(morgan("dev"));
 taskRoutes(app);
 AuthRoutes(app);
 projectRoutes(app);
+collaboratorRoutes(app);
 
 export default app;
