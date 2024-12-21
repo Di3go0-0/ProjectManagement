@@ -37,3 +37,15 @@ export const obtainUserRepo = async (mail: string): Promise<IUser | null> => {
     return null;
   }
 };
+
+export const obtainUserByIdRepo = async (id: number): Promise<IUser | null> => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { id: id }
+    })
+    if (!user) return null;
+    return user;
+  } catch (e) {
+    return null;
+  }
+}
