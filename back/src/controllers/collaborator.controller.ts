@@ -1,36 +1,34 @@
 import type { Request, Response } from "express";
 import {
   addProjectCollaboratorRepo,
-  isCollaboratorRepo,
+  getCollaboratorsByProjectId,
+  isProjectCollaboratorRepo,
   isUserProjectOwner,
   obtainUserByIdRepo
 } from "../repository";
 
-export const addProjectCollaborator = async (req: Request, res: Response) => {
-  const { projectId, userId } = req.body;
+
+
+
+export const getProjectCollaborators = async (req: Request, res: Response) => {
+  const { projectId } = req.body;
   const cookie = req.cookies.token as string;
 
   try {
-    const user = await obtainUserByIdRepo(userId as number);
-    if (!user) res.status(404).json({ message: "User not found" });
+    // const isOwner = await isUserProjectOwner(projectId as number, cookie);
+    // if (!isOwner) res.status(404).json({ message: "Project not found" });
+    //
+    // const collaborators = await getCollaboratorsByProjectId(projectId as number);
+    //
+    // if (!collaborators) res.status(404).json({ message: "Collaborators not found" });
+    //
+    // res.status(200).json(collaborators);
 
-    const project = await isUserProjectOwner(projectId as number, cookie);
-    if (!project) res.status(404).json({ message: "Project not found", });
-
-    const isCollaborator = await isCollaboratorRepo({ projectId, userId });
-    if (isCollaborator) res.status(400).json({ message: "User is already a collaborator" });
-
-    const projectWithCollaborator = await addProjectCollaboratorRepo({ projectId, userId });
-    if (!projectWithCollaborator) res.status(500).json({ message: "Error adding collaborator" });
-
-
-    res.status(200).json({
-      message: `Collaborator added, ${userId} to project ${projectId}`,
-      data: projectWithCollaborator,
-    });
+    res.status(200).json({ message: "Collaborators found" });
 
   } catch (e) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      message: "Internal server error",
+    });
   }
-
 }
