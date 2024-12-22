@@ -1,9 +1,16 @@
 import type { Request, Response } from "express";
 import {
+  addTaskCollaboratorRepo,
   createTaskRepo,
   deleteTaskRepo,
   getAllTasksRepo,
+  getProjectIdByTaskIdRepo,
   getTaskByIdRepo,
+  isTaskCollaboratorRepo,
+  isTaskOwnerRepo,
+  isUserProjectOwner,
+  obtainUserByIdRepo,
+  obtainUserRepo,
   projectExists,
   toggleTaskRepo,
   updateTaskRepo,
@@ -107,3 +114,37 @@ export const toggleTask = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const addCollaborator = async (req: Request, res: Response) => {
+  const { taskId, userId } = req.body;
+  const cookie = req.cookies.token as string;
+
+  try {
+    const user = await obtainUserByIdRepo(userId as number);
+    if (!user) res.status(404).json({ message: "User not found" })
+
+    const projectId = await getProjectIdByTaskIdRepo(taskId as number);
+    if (!projectId) res.status(404).json({ message: "Project not found" });
+
+    const isProjectOwner = await isUserProjectOwner(projectId as number, cookie);
+    if (!isProjectOwner) res.status(404).json({ message: "Project not found", });
+
+    const isOwner = await isTaskOwnerRepo(taskId, cookie);
+    if (!isOwner) res.status(404).json({ message: "Task not found" });
+
+    const isCollaborator = await isTaskCollaboratorRepo({ taskId, cookie });
+    if (isCollaborator) res.status(400).json({ message: "User is already a collaborator" });
+
+    const addCollaborator = await addTaskCollaboratorRepo({ taskId, userId });
+    if (!addCollaborator) res.status(500).json({ message: "Error adding collaborator" });
+
+    res.status(200).json({
+      message: `Collaborator added`,
+    });
+
+  } catch (e) {
+    res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+} 
