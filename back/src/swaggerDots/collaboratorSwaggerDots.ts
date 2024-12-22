@@ -2,14 +2,28 @@ export const collaboratorSwaggerDocs = {
   tags: [
     {
       name: "Collaborator",
-      description: "Collaborator Management"
+      description: "Collaborator Management",
     },
   ],
 
   paths: {
     "/collaborator/project": {
+      get: {
+        summary: "Get collaborators by project",
+        tags: ["Collaborator"],
+        responses: {
+          200: {
+            description: "Collaborators found",
+          },
+          404: {
+            description: "Collaborators not found",
+          },
+        },
+      },
+    },
+    "/collaborator/task": {
       post: {
-        summary: "Add a collaborator to a project",
+        summary: "Add a collaborator to a task",
         tags: ["Collaborator"],
         requestBody: {
           required: true,
@@ -23,9 +37,12 @@ export const collaboratorSwaggerDocs = {
                   },
                   projectId: {
                     type: "number",
-                  }
+                  },
+                  taskId: {
+                    type: "number",
+                  },
                 },
-                required: ["userId", "projectId"],
+                required: ["userId", "projectId", "taskId"],
               },
             },
           },
@@ -38,13 +55,11 @@ export const collaboratorSwaggerDocs = {
             description: "Invalid input",
           },
           404: {
-            description: "Project not found",
+            description: "Task not found",
           },
         },
       },
     },
-
-  }
-}
-
+  },
+};
 
