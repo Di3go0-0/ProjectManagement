@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  addCollaborator,
   createTask,
   deleteTask,
   getTaskById,
@@ -18,5 +19,6 @@ router.post("/", userToken, validateSchema(taskSchema), createTask);
 router.put("/:id", userToken, validateSchema(taskSchema), updateTask);
 router.delete("/:id", userToken, deleteTask);
 router.patch("/:id", userToken, toggleTask);
+router.post("/collaborator", userToken, addCollaborator)
 
 export const taskRoutes = (app: any) => app.use("/task", router);
