@@ -37,6 +37,7 @@ export const getAllProjectsRepo = async (cookie: string,): Promise<IProject[] | 
       },
       include: {
         tasks: true,
+        // collaborators: true,
       },
     });
     return projects;
@@ -138,6 +139,7 @@ export const projectExists = async (projectId: number): Promise<boolean> => {
   if (!project) return false;
   return true;
 };
+
 export const isUserProjectOwner = async (projectId: number, cookie: string): Promise<boolean> => {
   const userId = await getUserId(cookie);
   if (!userId) return false;
