@@ -144,3 +144,35 @@ export const toggleTaskRepo = async ({ taskId, cookie, }: taskRepo): Promise<ITa
     return null;
   }
 };
+
+export const isTaskOwnerRepo = async (taskId: number, cookie: string): Promise<boolean> => {
+  try {
+    const userId = await getUserId(cookie);
+    if (!userId) return false;
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+        userId: userId,
+      },
+    });
+    return !!task;
+  } catch {
+    return false;
+  }
+}
+
+export const getProjectIdByTaskIdRepo = async (taskId: number): Promise<number | null> => {
+  try {
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+      },
+    });
+    if (!task) return 0;
+    return task.projectId;
+  }
+  catch {
+    return null;
+  }
+}
+
