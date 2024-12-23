@@ -115,6 +115,7 @@ export const toggleTask = async (req: Request, res: Response) => {
   }
 };
 
+
 export const addCollaborator = async (req: Request, res: Response) => {
   const { taskId, userId } = req.body;
   const cookie = req.cookies.token as string;
@@ -130,9 +131,9 @@ export const addCollaborator = async (req: Request, res: Response) => {
     if (!isProjectOwner) res.status(404).json({ message: "Project not found", });
 
     const isOwner = await isTaskOwnerRepo(taskId, cookie);
-    if (!isOwner) res.status(404).json({ message: "Task not found" });
+    if (isOwner) res.status(404).json({ message: "User is owner" });
 
-    const isCollaborator = await isTaskCollaboratorRepo({ taskId, cookie });
+    const isCollaborator = await isTaskCollaboratorRepo({ taskId, userId });
     if (isCollaborator) res.status(400).json({ message: "User is already a collaborator" });
 
     const addCollaborator = await addTaskCollaboratorRepo({ taskId, userId });
