@@ -155,7 +155,7 @@ export const isTaskOwnerRepo = async (taskId: number, cookie: string): Promise<b
         userId: userId,
       },
     });
-    return !!task;
+    return task ? true : false;
   } catch {
     return false;
   }
