@@ -149,8 +149,7 @@ export const isUserProjectOwner = async (projectId: number, cookie: string): Pro
       userId: userId,
     },
   });
-  if (!project) return false;
-  return true;
+  return project !== null;
 };
 
 
