@@ -11,7 +11,7 @@ interface addCollaboratorProps {
 
 interface isTaskCollaborator {
   taskId: number;
-  cookie: string;
+  userId: number
 }
 
 interface addTaskCollaborator {
@@ -59,10 +59,8 @@ export const isProjectCollaboratorRepo = async ({ projectId, userId }: addCollab
   return !!collaborator;
 }
 
-export const isTaskCollaboratorRepo = async ({ taskId, cookie }: isTaskCollaborator): Promise<boolean> => {
+export const isTaskCollaboratorRepo = async ({ taskId, userId }: isTaskCollaborator): Promise<boolean> => {
   try {
-    const userId = await getUserId(cookie);
-    if (!userId) return false;
     const collaborator = await prisma.taskColaborator.findFirst({
       where: {
         taskId,
@@ -75,7 +73,6 @@ export const isTaskCollaboratorRepo = async ({ taskId, cookie }: isTaskCollabora
     return false;
   }
 }
-
 
 export const getCollaboratorsByProjectId = async (projectId: number): Promise<IUser[] | null> => {
   try {
