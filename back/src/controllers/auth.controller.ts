@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { generateToken, verifyToken } from "../helpers";
 import { obtainUserRepo, registerRepo } from "../repository";
 import { verifyPassword } from "../services";
-import { IUser } from "../interfaces";
 
 interface User {
   id: number;
@@ -15,16 +14,18 @@ export const register = async (req: Request, res: Response) => {
   try {
     const userExist = await obtainUserRepo(mail);
     if (userExist) {
-      return res.status(400).json({ message: "User already exists", mail: "mail already exists" });
+      res.status(400).json({ message: "User already exists", mail: "mail already exists" });
     }
-    const user: IUser | null = await registerRepo({ mail, name, password });
+    const user = await registerRepo({ mail, name, password });
     if (!user) {
-      return res.status(400).json({ message: "Error creating user" });
+      res.status(400).json({ message: "Error creating user" });
+      return;
     }
+
     const userCreated: User = { id: user.id, mail: user.mail, name: user.name as string };
-    return res.status(201).json({ data: userCreated, message: "User created successfully" });
+    res.status(201).json({ data: userCreated, message: "User created successfully" });
   } catch (error) {
-    return res.status(500).json({ message: "Error creating user" });
+    res.status(500).json({ message: "Error creating user" });
   }
 };
 
