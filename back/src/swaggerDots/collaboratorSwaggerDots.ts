@@ -9,8 +9,18 @@ export const collaboratorSwaggerDocs = {
   paths: {
     "/collaborator/project": {
       get: {
-        summary: "Get collaborators by project",
+        summary: "Get all collaborators of a project",
         tags: ["Collaborator"],
+        parameters: [
+          {
+            name: "projectId",
+            in: "query",
+            required: true,
+            schema: {
+              type: "number",
+            },
+          },
+        ],
         responses: {
           200: {
             description: "Collaborators found",
