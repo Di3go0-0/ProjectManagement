@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
-import { getCollaboratorsByProjectId, getProjectsForCollaboratorRepo, getTasksForCollaboratorRepo, isUserProjectOwner, obtainUserByIdRepo } from "../repository";
+import { getCollaboratorsByProjectId, getProjectsForCollaboratorRepo, getTasksForCollaboratorRepo, isProjectCollaboratorRepo, isUserProjectOwner, obtainUserByIdRepo } from "../repository";
+import { getUserId } from "../helpers";
 
 
 
@@ -30,9 +31,12 @@ export const getCollaboratorsProject = async (req: Request, res: Response) => {
 }
 
 export const getAllProjectsForCollaborator = async (req: Request, res: Response) => {
-  const { userId } = req.params;
+  const cookie = req.cookies.token as string;
 
   try {
+    const userId = await getUserId(cookie);
+    if (!userId) res.status(401).json({ message: "Unauthorized" });
+
     if (!userId) res.status(400).json({ message: "User ID is required" });
 
     const user = await obtainUserByIdRepo(Number(userId));
@@ -54,6 +58,14 @@ export const getAllTasksForCollaborator = async (req: Request, res: Response) =>
   try {
     if (!projectId) res.status(400).json({ message: "project ID is required" });
 
+    const userId = await getUserId(cookie);
+    if (!userId) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const isCollaborator = await isProjectCollaboratorRepo({ projectId: Number(projectId), userId });
+    if (!isCollaborator) res.status(400).json({ message: "User is not collaborator" });
 
     const tasks = await getTasksForCollaboratorRepo({ projectId: Number(projectId), cookie });
     if (!tasks) res.status(404).json({ message: "Projects not found" });
