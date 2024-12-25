@@ -107,3 +107,59 @@ export const addTaskCollaboratorRepo = async ({ taskId, userId }: addTaskCollabo
     return false;
   }
 }
+
+export const getProjectsForCollaboratorRepo = async (userId: number): Promise<any | null> => {
+  try {
+    const projects = await prisma.project.findMany({
+      where: {
+        collaborators: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        user: true,
+      }
+    })
+
+    return projects;
+
+  } catch {
+    return null
+  }
+}
+
+interface getTasksForCollaboratorRepoProps {
+  projectId: number;
+  cookie: string;
+}
+
+export const getTasksForCollaboratorRepo = async ({ projectId, cookie }: getTasksForCollaboratorRepoProps): Promise<any | null> => {
+  try {
+    const userId = await getUserId(cookie);
+    if (!userId) return null;
+
+    const tasks = await prisma.task.findMany({
+      where: {
+        projectId: projectId,
+        collaborators: {
+          some: {
+            userId: userId,
+          },
+        },
+        NOT: {
+          userId: userId,
+        },
+      },
+      include: {
+        user: true,
+      }
+    })
+    return tasks;
+
+  } catch {
+    return null
+  }
+}
+
