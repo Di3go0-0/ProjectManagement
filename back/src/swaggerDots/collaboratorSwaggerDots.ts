@@ -31,20 +31,11 @@ export const collaboratorSwaggerDocs = {
         },
       },
     },
-    "/collaborator/user/project/{userId}": {
+    "/collaborator/user/project": {
       get: {
         summary: "Get all projects where a user is a collaborator",
         tags: ["Collaborator"],
-        parameters: [
-          {
-            name: "userId",
-            in: "path",
-            required: true,
-            schema: {
-              type: "number",
-            },
-          },
-        ],
+
         responses: {
           200: {
             description: "Collaborators found",
