@@ -73,5 +73,16 @@ export const authswaggerDocs = {
         },
       },
     },
-  },
-};
+    "/users": {
+      get: {
+        summary: "Get all users",
+        tags: ["Auth"],
+        responses: {
+          200: { description: "Users retrieved successfully" },
+          400: { description: "No token found" },
+        }
+      },
+    }
+  }
+}
+

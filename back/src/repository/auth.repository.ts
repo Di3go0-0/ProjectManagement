@@ -38,6 +38,16 @@ export const obtainUserRepo = async (mail: string): Promise<IUser | null> => {
   }
 };
 
+export const obatainUsersRepo = async (): Promise<IUser[] | null> => {
+  try {
+    const users = await prisma.user.findMany();
+    if (!users) return null;
+    return users;
+  } catch {
+    return null;
+  }
+}
+
 export const obtainUserByIdRepo = async (id: number): Promise<IUser | null> => {
   try {
     const user = await prisma.user.findFirst({
