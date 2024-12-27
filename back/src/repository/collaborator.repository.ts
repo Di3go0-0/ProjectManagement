@@ -21,14 +21,14 @@ interface addTaskCollaborator {
 
 export const addProjectCollaboratorRepo = async ({ projectId, userId }: addCollaboratorProps): Promise<IProject | null> => {
   try {
-    const colaborator = await prisma.projectColaborator.create({
+    const collaborator = await prisma.projectCollaborator.create({
       data: {
         projectId,
         userId,
       },
     })
 
-    if (!colaborator) return null;
+    if (!collaborator) return null;
 
     const project = await prisma.project.findUnique({
       where: {
@@ -49,7 +49,7 @@ export const addProjectCollaboratorRepo = async ({ projectId, userId }: addColla
 
 
 export const isProjectCollaboratorRepo = async ({ projectId, userId }: addCollaboratorProps): Promise<boolean> => {
-  const collaborator = await prisma.projectColaborator.findFirst({
+  const collaborator = await prisma.projectCollaborator.findFirst({
     where: {
       projectId,
       userId,
@@ -61,7 +61,7 @@ export const isProjectCollaboratorRepo = async ({ projectId, userId }: addCollab
 
 export const isTaskCollaboratorRepo = async ({ taskId, userId }: isTaskCollaborator): Promise<boolean> => {
   try {
-    const collaborator = await prisma.taskColaborator.findFirst({
+    const collaborator = await prisma.taskCollaborator.findFirst({
       where: {
         taskId,
         userId,
@@ -76,7 +76,7 @@ export const isTaskCollaboratorRepo = async ({ taskId, userId }: isTaskCollabora
 
 export const getCollaboratorsByProjectId = async (projectId: number): Promise<IUser[] | null> => {
   try {
-    const collaborators = await prisma.projectColaborator.findMany({
+    const collaborators = await prisma.projectCollaborator.findMany({
       where: { projectId },
       include: {
         user: true, // Incluye los datos del usuario
@@ -94,7 +94,7 @@ export const getCollaboratorsByProjectId = async (projectId: number): Promise<IU
 
 export const addTaskCollaboratorRepo = async ({ taskId, userId }: addTaskCollaborator): Promise<boolean> => {
   try {
-    const task = await prisma.taskColaborator.create({
+    const task = await prisma.taskCollaborator.create({
       data: {
         taskId,
         userId,
