@@ -8,50 +8,50 @@ datasource db {
 }
 
 model Task {
-  id            Int               @id @default(autoincrement())
+  id            Int                @id @default(autoincrement())
   title         String
   description   String
-  done          Boolean           @default(false)
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+  done          Boolean            @default(false)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
   userId        Int
   projectId     Int
-  project       Project           @relation(fields: [projectId], references: [id])
-  user          User              @relation(fields: [userId], references: [id])
-  collaborators TaskColaborator[]
+  project       Project            @relation(fields: [projectId], references: [id])
+  user          User               @relation(fields: [userId], references: [id])
+  collaborators TaskCollaborator[]
 
   @@index([projectId], map: "Task_projectId_fkey")
   @@index([userId], map: "Task_userId_fkey")
 }
 
 model Project {
-  id            Int                  @id @default(autoincrement())
+  id            Int                   @id @default(autoincrement())
   title         String
   description   String
   userId        Int
-  createdAt     DateTime             @default(now())
-  updatedAt     DateTime             @updatedAt
-  user          User                 @relation(fields: [userId], references: [id])
-  collaborators ProjectColaborator[]
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  user          User                  @relation(fields: [userId], references: [id])
+  collaborators ProjectCollaborator[]
   tasks         Task[]
 
   @@index([userId], map: "Project_userId_fkey")
 }
 
 model User {
-  id                  Int                  @id @default(autoincrement())
+  id                  Int                   @id @default(autoincrement())
   name                String?
   password            String
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  mail                String               @unique
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  mail                String                @unique
   projects            Project[]
-  projectsColaborator ProjectColaborator[]
+  projectsColaborator ProjectCollaborator[]
   tasks               Task[]
-  tasksColaborator    TaskColaborator[]
+  tasksColaborator    TaskCollaborator[]
 }
 
-model ProjectColaborator {
+model ProjectCollaborator {
   id        Int      @id @default(autoincrement())
   projectId Int
   userId    Int
@@ -64,7 +64,7 @@ model ProjectColaborator {
   @@index([userId], map: "ProjectColaborator_userId_fkey")
 }
 
-model TaskColaborator {
+model TaskCollaborator {
   id        Int      @id @default(autoincrement())
   taskId    Int
   userId    Int
